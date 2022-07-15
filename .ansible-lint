@@ -11,3 +11,7 @@ exclude_paths:
   - ./.cache
   - ./.github
   - ./requirements.yml
+
+skip_list:  # TODO: @buluma check these linting issues
+  - experimental  # all rules tagged as experimental
+  - fqcn-builtins  # Use FQCN for builtin actions.
