@@ -97,7 +97,7 @@
     - datadogagent
 
 - name: Create installation information file
-  template:
+  ansible.builtin.template:
     src: install_info.j2
     dest: "{{ datadog_windows_config_root }}\\install_info"
     mode: 0644

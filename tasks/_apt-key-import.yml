@@ -20,7 +20,7 @@
 # the key to `datadog_apt_usr_share_keyring`.
 
 - name: "Set local variables for processed key {{ item.key }}"
-  set_fact:
+  ansible.builtin.set_fact:
     key_fingerprint: "{{ item.key }}"
     keyring_url: "{{ item.value }}"
 
@@ -32,17 +32,17 @@
   when: key_fingerprint != datadog_apt_key_current_name  # we always want to import the CURRENT key
 
 - name: "Set local helper variable for determining key import (when not {{ datadog_apt_key_current_name }})"
-  set_fact:
+  ansible.builtin.set_fact:
     key_needs_import: "{{ 'false' if key_exists_result.rc == 0 else 'true' }}"
   when: key_fingerprint != datadog_apt_key_current_name
 
 - name: "Set local helper variable for determining key import (when {{ datadog_apt_key_current_name }})"
-  set_fact:
+  ansible.builtin.set_fact:
     key_needs_import: "true"
   when: key_fingerprint == datadog_apt_key_current_name
 
 - name: "Create temporary directory for key manipulation"
-  tempfile:
+  ansible.builtin.tempfile:
     state: directory
     suffix: keys
   register: tempdir
@@ -50,7 +50,7 @@
   changed_when: false
 
 - name: "Download {{ keyring_url }} to import key {{ key_fingerprint }}"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ keyring_url }}"
     dest: "{{ tempdir.path }}/{{ key_fingerprint }}"
     force: yes
@@ -69,7 +69,7 @@
   changed_when: false
 
 - name: "Extract the required key from the binary keyring (when {{ datadog_apt_key_current_name }})"
-  copy:
+  ansible.builtin.copy:
     src: "{{ tempdir.path }}/binary.gpg"
     dest: "{{ tempdir.path }}/single.gpg"
     mode: "0600"
@@ -84,7 +84,7 @@
   changed_when: '"imported: 1" in key_import_result.stderr'
 
 - name: "Remove temporary directory for key manipulation"
-  file:
+  ansible.builtin.file:
     path: "{{ tempdir.path }}"
     state: absent
   when: key_needs_import

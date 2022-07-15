@@ -1,15 +1,15 @@
 ---
 - name: Populate service facts
-  service_facts:
+  ansible.builtin.service_facts:
 
 - name: Set before 6/7.24.1 flag
-  set_fact:
+  ansible.builtin.set_fact:
     datadog_before_7241: "{{ datadog_major is defined and datadog_minor is defined and datadog_bugfix is defined
       and datadog_major | int < 8
       and (datadog_minor | int < 24 or (datadog_minor | int == 24 and datadog_bugfix | int < 1)) }}"
 
 - name: Set before 6/7.18.0 flag
-  set_fact:
+  ansible.builtin.set_fact:
     datadog_before_7180: "{{ datadog_major is defined and datadog_minor is defined
       and datadog_major | int < 8 and datadog_minor | int < 18 }}"
 
@@ -27,7 +27,7 @@
     _dd_notify_agent: "restart datadog-agent"
 
 - name: Create system-probe configuration file
-  template:
+  ansible.builtin.template:
     src: system-probe.yaml.j2
     dest: /etc/datadog-agent/system-probe.yaml
     mode: 0640
@@ -38,7 +38,7 @@
     "{% if datadog_before_7180 %}restart datadog-agent-sysprobe{% else %}restart datadog-agent{% endif %}"
 
 - name: Set system probe installed
-  set_fact:
+  ansible.builtin.set_fact:
     datadog_sysprobe_installed: "{{ ansible_facts.services['datadog-agent-sysprobe'] is defined
       or ansible_facts.services['datadog-agent-sysprobe.service'] is defined }}"
   when: not datadog_skip_running_check
@@ -47,7 +47,7 @@
 # datadog_minor is only defined when a specific Agent version is given
 # (see tasks/parse-version.yml)
 - name: Set system probe enabled (before 6/7.24.1)
-  set_fact:
+  ansible.builtin.set_fact:
     datadog_sysprobe_enabled: "{{ system_probe_config is defined
       and 'enabled' in (system_probe_config | default({}, true))
       and system_probe_config['enabled']
@@ -58,7 +58,7 @@
 # Since 6/7.24.1, setting enabled: true in network_config is enough to start the system-probe service:
 # https://docs.datadoghq.com/network_monitoring/performance/setup/?tab=agent#setup
 - name: Set system probe enabled (since 6/7.24.1)
-  set_fact:
+  ansible.builtin.set_fact:
     datadog_sysprobe_enabled: "{{
       ((system_probe_config is defined
       and 'enabled' in (system_probe_config | default({}, true))
@@ -71,21 +71,21 @@
     and (not datadog_before_7241)
 
 - name: Ensure datadog-agent is running
-  service:
+  ansible.builtin.service:
     name: datadog-agent
     state: started
     enabled: yes
   when: not datadog_skip_running_check and datadog_enabled and not ansible_check_mode
 
 - name: Ensure datadog-agent-sysprobe is running if enabled and installed
-  service:
+  ansible.builtin.service:
     name: datadog-agent-sysprobe
     state: started
     enabled: yes
   when: not datadog_skip_running_check and datadog_enabled and not ansible_check_mode and datadog_sysprobe_enabled
 
 - name: Ensure datadog-agent, datadog-agent-process and datadog-agent-trace are not running
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
     enabled: no
@@ -98,7 +98,7 @@
 # Stop system-probe manually on Agent versions < 6/7.18, as it was not tied
 # to the main Agent service: https://github.com/DataDog/datadog-agent/pull/4883
 - name: Ensure datadog-agent-sysprobe is stopped if disabled or not installed (before 6/7.18.0)
-  service:
+  ansible.builtin.service:
     name: datadog-agent-sysprobe
     state: stopped
     enabled: no
@@ -108,7 +108,7 @@
     and datadog_sysprobe_installed
 
 - name: Ensure datadog-agent-security is not running
-  service:
+  ansible.builtin.service:
     name: datadog-agent-security
     state: stopped
     enabled: no
@@ -116,7 +116,7 @@
   failed_when: false # Since older versions of the Agent don't include the security agent
 
 - name: Create security-agent configuration file
-  template:
+  ansible.builtin.template:
     src: security-agent.yaml.j2
     dest: /etc/datadog-agent/security-agent.yaml
     mode: 0640
@@ -130,7 +130,7 @@
 # and then runtime_security_config was completely removed, this is the only way to ensure
 # we remove the leftover config file.
 - name: Remove security-agent configuration file if security-agent is no longer configured
-  file:
+  ansible.builtin.file:
     path: /etc/datadog-agent/security-agent.yaml
     state: absent
   when: datadog_manage_config and (runtime_security_config is not defined or runtime_security_config | default({}, true) | length == 0)

@@ -31,5 +31,5 @@
 
   tasks:
     - name: "Include buluma.datadog"
-      include_role:
+      ansible.builtin.include_role:
         name: "buluma.datadog"
