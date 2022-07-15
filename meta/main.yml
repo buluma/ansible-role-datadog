@@ -1,0 +1,35 @@
+---
+galaxy_info:
+  author: buluma
+  role_name: datadog
+  description: Install and configure Datadog on your systems.
+  company: ShadowNet
+  license: Apache-2.0
+
+  min_ansible_version: "2.1"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+        - artful
+        - bionic
+        - focal
+    - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - "8"
+        - "7"
+    - name: Amazon Linux 2
+      versions:
+        - any
+    - name: opensuse
+      versions:
+        - all
+
+  galaxy_tags: []
+
+dependencies: []
