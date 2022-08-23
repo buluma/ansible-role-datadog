@@ -4,7 +4,7 @@ Install and configure Datadog on your systems.
 
 |GitHub|GitLab|Quality|Downloads|Version|Issues|Pull Requests|
 |------|------|-------|---------|-------|------|-------------|
-|[![github](https://github.com/buluma/ansible-role-datadog/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-datadog/actions)|[![gitlab](https://gitlab.com/buluma/ansible-role-datadog/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-datadog)|[![quality](https://img.shields.io/ansible/quality/)](https://galaxy.ansible.com/buluma/datadog)|[![downloads](https://img.shields.io/ansible/role/d/)](https://galaxy.ansible.com/buluma/datadog)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/pulls/)|
+|[![github](https://github.com/buluma/ansible-role-datadog/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-datadog/actions)|[![gitlab](https://gitlab.com/buluma/ansible-role-datadog/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-datadog)|[![quality](https://img.shields.io/ansible/quality/59722)](https://galaxy.ansible.com/buluma/datadog)|[![downloads](https://img.shields.io/ansible/role/d/59722)](https://galaxy.ansible.com/buluma/datadog)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/pulls/)|
 
 ## [Example Playbook](#example-playbook)
 
@@ -43,8 +43,21 @@ This example is taken from `molecule/default/converge.yml` and is tested on each
 
   tasks:
     - name: "Include buluma.datadog"
-      include_role:
+      ansible.builtin.include_role:
         name: "buluma.datadog"
+```
+
+The machine needs to be prepared. In CI this is done using `molecule/default/prepare.yml`:
+```yaml
+---
+- name: Prepare
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  roles:
+    - role: buluma.bootstrap
+    - role: buluma.ca_certificates
 ```
 
 
@@ -282,6 +295,7 @@ The following roles are used to prepare a system. You can prepare your system in
 | Requirement | GitHub | GitLab |
 |-------------|--------|--------|
 |[buluma.bootstrap](https://galaxy.ansible.com/buluma/bootstrap)|[![Build Status GitHub](https://github.com/buluma/ansible-role-bootstrap/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-bootstrap/actions)|[![Build Status GitLab ](https://gitlab.com/buluma/ansible-role-bootstrap/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-bootstrap)|
+|[buluma.ca_certificates](https://galaxy.ansible.com/buluma/ca_certificates)|[![Build Status GitHub](https://github.com/buluma/ansible-role-ca_certificates/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-ca_certificates/actions)|[![Build Status GitLab ](https://gitlab.com/buluma/ansible-role-ca_certificates/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-ca_certificates)|
 
 ## [Context](#context)
 
