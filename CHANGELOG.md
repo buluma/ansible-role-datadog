@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/buluma/ansible-role-datadog/tree/HEAD)
+
+[Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.1.1...HEAD)
+
+**Closed issues:**
+
+- \[ANS-48\] fix linting issues on molecule level [\#1](https://github.com/buluma/ansible-role-datadog/issues/1)
+
+## [0.1.1](https://github.com/buluma/ansible-role-datadog/tree/0.1.1) (2022-08-23)
+
+[Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.1.0...0.1.1)
+
 ## [0.1.0](https://github.com/buluma/ansible-role-datadog/tree/0.1.0) (2022-07-15)
 
 [Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/1c4509bc8f13e666399eb237528ac1be9fa78c19...0.1.0)
