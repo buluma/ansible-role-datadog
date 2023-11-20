@@ -1,14 +1,15 @@
-# [datadog](#datadog)
+# [Ansible role datadog](#datadog)
 
 Install and configure Datadog on your systems.
 
-|GitHub|GitLab|Quality|Downloads|Version|Issues|Pull Requests|
-|------|------|-------|---------|-------|------|-------------|
-|[![github](https://github.com/buluma/ansible-role-datadog/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-datadog/actions)|[![gitlab](https://gitlab.com/buluma/ansible-role-datadog/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-datadog)|[![quality](https://img.shields.io/ansible/quality/59722)](https://galaxy.ansible.com/buluma/datadog)|[![downloads](https://img.shields.io/ansible/role/d/59722)](https://galaxy.ansible.com/buluma/datadog)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/pulls/)|
+|GitHub|GitLab|Downloads|Version|Issues|Pull Requests|
+|------|------|-------|-------|------|-------------|
+|[![github](https://github.com/buluma/ansible-role-datadog/actions/workflows/molecule.yml/badge.svg)](https://github.com/buluma/ansible-role-datadog/actions/workflows/molecule.yml)|[![gitlab](https://gitlab.com/shadowwalker/ansible-role-datadog/badges/master/pipeline.svg)](https://gitlab.com/shadowwalker/ansible-role-datadog)|[![downloads](https://img.shields.io/ansible/role/d/4680)](https://galaxy.ansible.com/buluma/datadog)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/pulls/)|
 
 ## [Example Playbook](#example-playbook)
 
-This example is taken from `molecule/default/converge.yml` and is tested on each push, pull request and release.
+This example is taken from [`molecule/default/converge.yml`](https://github.com/buluma/ansible-role-datadog/blob/master/molecule/default/converge.yml) and is tested on each push, pull request and release.
+
 ```yaml
 ---
 - name: Converge
@@ -47,7 +48,8 @@ This example is taken from `molecule/default/converge.yml` and is tested on each
         name: "buluma.datadog"
 ```
 
-The machine needs to be prepared. In CI this is done using `molecule/default/prepare.yml`:
+The machine needs to be prepared. In CI this is done using [`molecule/default/prepare.yml`](https://github.com/buluma/ansible-role-datadog/blob/master/molecule/default/prepare.yml):
+
 ```yaml
 ---
 - name: Prepare
@@ -60,10 +62,12 @@ The machine needs to be prepared. In CI this is done using `molecule/default/pre
     - role: buluma.ca_certificates
 ```
 
+Also see a [full explanation and example](https://buluma.github.io/how-to-use-these-roles.html) on how to use these roles.
 
 ## [Role Variables](#role-variables)
 
-The default values for the variables are set in `defaults/main.yml`:
+The default values for the variables are set in [`defaults/main.yml`](https://github.com/buluma/ansible-role-datadog/blob/master/defaults/main.yml):
+
 ```yaml
 ---
 # defaults file for datadog
@@ -286,16 +290,16 @@ datadog_macos_run_dir: "/opt/datadog-agent/run"
 
 ## [Requirements](#requirements)
 
-- pip packages listed in [requirements.txt](https://github.com/buluma/ansible-role-datadog/blob/main/requirements.txt).
+- pip packages listed in [requirements.txt](https://github.com/buluma/ansible-role-datadog/blob/master/requirements.txt).
 
-## [Status of used roles](#status-of-requirements)
+## [State of used roles](#state-of-used-roles)
 
 The following roles are used to prepare a system. You can prepare your system in another way.
 
 | Requirement | GitHub | GitLab |
 |-------------|--------|--------|
-|[buluma.bootstrap](https://galaxy.ansible.com/buluma/bootstrap)|[![Build Status GitHub](https://github.com/buluma/ansible-role-bootstrap/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-bootstrap/actions)|[![Build Status GitLab ](https://gitlab.com/buluma/ansible-role-bootstrap/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-bootstrap)|
-|[buluma.ca_certificates](https://galaxy.ansible.com/buluma/ca_certificates)|[![Build Status GitHub](https://github.com/buluma/ansible-role-ca_certificates/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-ca_certificates/actions)|[![Build Status GitLab ](https://gitlab.com/buluma/ansible-role-ca_certificates/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-ca_certificates)|
+|[buluma.bootstrap](https://galaxy.ansible.com/buluma/bootstrap)|[![Build Status GitHub](https://github.com/buluma/ansible-role-bootstrap/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-bootstrap/actions)|[![Build Status GitLab](https://gitlab.com/shadowwalker/ansible-role-bootstrap/badges/master/pipeline.svg)](https://gitlab.com/shadowwalker/ansible-role-bootstrap)|
+|[buluma.ca_certificates](https://galaxy.ansible.com/buluma/ca_certificates)|[![Build Status GitHub](https://github.com/buluma/ansible-role-ca_certificates/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-ca_certificates/actions)|[![Build Status GitLab](https://gitlab.com/shadowwalker/ansible-role-ca_certificates/badges/master/pipeline.svg)](https://gitlab.com/shadowwalker/ansible-role-ca_certificates)|
 
 ## [Context](#context)
 
@@ -311,19 +315,17 @@ This role has been tested on these [container images](https://hub.docker.com/u/b
 
 |container|tags|
 |---------|----|
-|ubuntu|all|
-|debian|all|
-|el|8, 7|
-|amazon|all|
-|opensuse|all|
+|[Ubuntu](https://hub.docker.com/repository/docker/buluma/ubuntu/general)|all|
+|[Debian](https://hub.docker.com/repository/docker/buluma/debian/general)|all|
+|[EL](https://hub.docker.com/repository/docker/buluma/enterpriselinux/general)|8, 7|
+|[Amazon](https://hub.docker.com/repository/docker/buluma/amazonlinux/general)|all|
+|[opensuse](https://hub.docker.com/repository/docker/buluma/opensuse/general)|all|
 
 The minimum version of Ansible required is 2.1, tests have been done to:
 
 - The previous version.
 - The current version.
 - The development version.
-
-
 
 If you find issues, please register them in [GitHub](https://github.com/buluma/ansible-role-datadog/issues)
 
@@ -333,8 +335,14 @@ If you find issues, please register them in [GitHub](https://github.com/buluma/a
 
 ## [License](#license)
 
-Apache-2.0
+[Apache-2.0](https://github.com/buluma/ansible-role-datadog/blob/master/LICENSE).
 
 ## [Author Information](#author-information)
 
 [buluma](https://buluma.github.io/)
+
+Please consider [sponsoring me](https://github.com/sponsors/buluma).
+
+### [Special Thanks](#special-thanks)
+
+Template inspired by [Robert de Bock](https://github.com/robertdebock)
