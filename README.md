@@ -1,10 +1,10 @@
-# [Ansible role datadog](#datadog)
+# Ansible role [datadog](https://galaxy.ansible.com/ui/standalone/roles/buluma/datadog/documentation)
 
 Install and configure Datadog on your systems.
 
-|GitHub|Version|Issues|Pull Requests|
-|------|-------|------|-------------|
-|[![github](https://github.com/buluma/ansible-role-datadog/actions/workflows/molecule.yml/badge.svg)](https://github.com/buluma/ansible-role-datadog/actions/workflows/molecule.yml)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/pulls/)|
+|GitHub|Version|Issues|Pull Requests|Downloads|
+|------|-------|------|-------------|---------|
+|[![github](https://github.com/buluma/ansible-role-datadog/actions/workflows/molecule.yml/badge.svg)](https://github.com/buluma/ansible-role-datadog/actions/workflows/molecule.yml)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-datadog.svg)](https://github.com/buluma/ansible-role-datadog/pulls/)|[![Ansible Role](https://img.shields.io/ansible/role/d/buluma/datadog)](https://galaxy.ansible.com/ui/standalone/roles/buluma/datadog/documentation)|
 
 ## [Example Playbook](#example-playbook)
 
@@ -339,9 +339,7 @@ If you find issues, please register them in [GitHub](https://github.com/buluma/a
 
 ## [Author Information](#author-information)
 
-[buluma](https://buluma.github.io/)
+[Shadow Walker](https://buluma.github.io/)
 
-
-### [Special Thanks](#special-thanks)
 
 Template inspired by [Robert de Bock](https://github.com/robertdebock)
