@@ -6,6 +6,7 @@
 
 **Closed issues:**
 
+- Update buluma/todo-to-issue-action@v1.0.1 @buluma [\#7](https://github.com/buluma/ansible-role-datadog/issues/7)
 - \[ANS-48\] fix linting issues on molecule level [\#1](https://github.com/buluma/ansible-role-datadog/issues/1)
 
 ## [0.1.1](https://github.com/buluma/ansible-role-datadog/tree/0.1.1) (2022-08-23)
