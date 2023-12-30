@@ -1,3 +1,4 @@
+---
 # Check current state of the integrations
 
 - name: Check integration state, integration={{ item.key }}
