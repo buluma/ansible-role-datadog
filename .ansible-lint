@@ -18,6 +18,3 @@ skip_list:
   - name[casing]
   - fqcn[action-core]
   - no-changed-when
-
-enable_list:
-  # - name[prefix]
