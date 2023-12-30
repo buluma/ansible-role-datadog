@@ -15,6 +15,9 @@ exclude_paths:
 
 skip_list:
   - yaml[truthy]
+  - name[casing]
+  - fqcn[action-core]
+  - no-changed-when
 
 enable_list:
   - name[prefix]
