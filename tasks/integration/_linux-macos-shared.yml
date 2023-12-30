@@ -2,7 +2,7 @@
 # Check current state of the integration
 
 - name: Check integration state, integration={{ item.key }}
-  command:
+  ansible.builtin.command:
     argv:
       - "{{ datadog_agent_binary_path }}"
       - integration
@@ -16,7 +16,7 @@
 # Remove integration
 
 - name: Removing integration, integration={{ item.key }}
-  command:
+  ansible.builtin.command:
     argv:
       - "{{ datadog_agent_binary_path }}"
       - integration

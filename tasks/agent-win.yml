@@ -17,7 +17,7 @@
   when: datadog_manage_config and (datadog_disable_untracked_checks or datadog_disable_default_checks)
 
 - name: Delete checks not present in agent_datadog_tracked_checks
-  win_file:
+  ansible.windows.win_file:
     path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('win_basename')
@@ -26,7 +26,7 @@
   notify: restart datadog-agent-win
 
 - name: Delete default checks
-  win_file:
+  ansible.windows.win_file:
     path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.default"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list
@@ -35,7 +35,7 @@
   notify: restart datadog-agent-win
 
 - name: Delete example checks
-  win_file:
+  ansible.windows.win_file:
     path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.example"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list
@@ -44,7 +44,7 @@
   notify: restart datadog-agent-win
 
 - name: Ensure configuration directories are present for each Datadog check
-  win_file:
+  ansible.windows.win_file:
     path: "{{ agent_datadog_windows_config_root }}\\conf.d\\{{ item }}.d"
     state: directory
   with_items: "{{ agent_datadog_checks | list }}"
@@ -59,7 +59,7 @@
   notify: restart datadog-agent-win
 
 - name: Remove old configuration file for each Datadog check
-  win_file:
+  ansible.windows.win_file:
     path: "{{ agent_datadog_windows_config_root }}\\conf.d\\{{ item }}.yaml"
     state: absent
   with_items: "{{ agent_datadog_checks | list }}"
@@ -67,7 +67,7 @@
   notify: restart datadog-agent-win
 
 - name: Create custom check file for each custom check
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ datadog_custom_checks[item] }}"
     dest: "{{ agent_datadog_windows_config_root }}\\checks.d\\{{ item }}.py"
   with_items: "{{ datadog_custom_checks | list }}"
@@ -108,7 +108,7 @@
     - datadogagent
 
 - name: Create installation information file
-  template:
+  ansible.builtin.template:
     src: install_info.j2
     dest: "{{ agent_datadog_windows_config_root }}\\install_info"
     mode: "0644"

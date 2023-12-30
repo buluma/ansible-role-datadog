@@ -1,13 +1,13 @@
 ---
 - name: (agent5) Create Datadog agent config directory
-  file:
+  ansible.builtin.file:
     dest: /etc/dd-agent
     state: directory
     mode: "0755"
   when: datadog_manage_config
 
 - name: (agent5) Create main Datadog agent configuration file
-  template:
+  ansible.builtin.template:
     src: datadog.conf.j2
     dest: /etc/dd-agent/datadog.conf
     owner: "{{ datadog_user }}"
@@ -17,21 +17,21 @@
   notify: restart datadog-agent
 
 - name: (agent5) Ensure datadog-agent is running
-  service:
+  ansible.builtin.service:
     name: datadog-agent
     state: started
     enabled: true
   when: not datadog_skip_running_check and datadog_enabled and not ansible_check_mode
 
 - name: (agent5) Ensure datadog-agent is not running
-  service:
+  ansible.builtin.service:
     name: datadog-agent
     state: stopped
     enabled: false
   when: not datadog_skip_running_check and not datadog_enabled
 
 - name: Register all checks files present in datadog
-  find:
+  ansible.builtin.find:
     paths: /etc/dd-agent/conf.d/
     patterns:
       - "*.yaml"
@@ -40,7 +40,7 @@
   when: datadog_manage_config and datadog_disable_untracked_checks
 
 - name: Register all checks files present in datadog
-  find:
+  ansible.builtin.find:
     paths: /etc/dd-agent/conf.d/
     patterns:
       - "*.yaml.default"
@@ -49,7 +49,7 @@
   when: datadog_manage_config and datadog_disable_default_checks
 
 - name: Delete checks not present in agent_datadog_tracked_checks
-  file:
+  ansible.builtin.file:
     path: "/etc/dd-agent/conf.d/{{ item }}.yaml"
     state: absent
   loop: "{{ agent_datadog_conf_files.files | map(attribute='path') | list | map('basename') | list | map('regex_replace', '^(.*).yaml$', '\\1') | list }}"
@@ -57,7 +57,7 @@
   notify: restart datadog-agent
 
 - name: Delete default checks
-  file:
+  ansible.builtin.file:
     path: "/etc/dd-agent/conf.d/{{ item }}.yaml.default"
     state: absent
   loop: "{{ agent_datadog_conf_files_default.files | map(attribute='path') | list | map('basename') | list |
@@ -66,7 +66,7 @@
   notify: restart datadog-agent
 
 - name: (agent5) Create a configuration file for each Datadog check
-  template:
+  ansible.builtin.template:
     src: checks.yaml.j2
     dest: /etc/dd-agent/conf.d/{{ item }}.yaml
     owner: "{{ datadog_user }}"

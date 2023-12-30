@@ -1,4 +1,5 @@
 ---
+# https://github.com/DataDog/ansible-datadog
 galaxy_info:
   author: buluma
   role_name: datadog
@@ -22,9 +23,6 @@ galaxy_info:
       versions:
         - all
     - name: Amazon
-      versions:
-        - all
-    - name: Fedora
       versions:
         - all
     - name: opensuse

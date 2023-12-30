@@ -28,7 +28,7 @@
   failed_when: agent_dd_container_install_cmd.rc >= 2
 
 - name: Create Docker APM injection config file
-  template:
+  ansible.builtin.template:
     src: apm-inject-docker-config.yaml.j2
     dest: /etc/datadog-agent/inject/docker_config.yaml
     mode: "0640"

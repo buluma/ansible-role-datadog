@@ -1,6 +1,6 @@
 ---
 - name: Validate integrations actions
-  fail:
+  ansible.builtin.fail:
     msg: "Unkown action '{{ item.value.action }}' for integration command ({{ item.key }}). Valid actions are 'install' and 'remove'"
   when: item.value.action != "install" and item.value.action != "remove"
   loop: "{{ datadog_integration | dict2items }}"

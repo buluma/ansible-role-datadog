@@ -8,14 +8,14 @@
   when: ansible_version.major == 2 and ansible_version.minor < 10
 
 - name: Initialize internal datadog_config variable
-  set_fact:
+  ansible.builtin.set_fact:
     agent_datadog_config: "{{ datadog_config }}"
 
 - name: Check if OS is supported
   include_tasks: os-check.yml
 
 - name: Fail if API key is missing
-  fail:
+  ansible.builtin.fail:
     msg: "datadog_api_key is mandatory when using managed config"
   when: datadog_api_key is not defined and datadog_manage_config
 

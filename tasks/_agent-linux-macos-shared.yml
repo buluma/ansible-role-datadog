@@ -1,6 +1,6 @@
 ---
 - name: Create Datadog agent config directory
-  file:
+  ansible.builtin.file:
     dest: "{{ agent_dd_config_dir }}"
     state: directory
     mode: "0755"
@@ -9,7 +9,7 @@
   when: datadog_manage_config
 
 - name: Create main Datadog agent configuration file
-  template:
+  ansible.builtin.template:
     src: datadog.yaml.j2
     dest: "{{ agent_dd_config_dir }}/datadog.yaml"
     mode: "0640"
@@ -19,7 +19,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Register all checks directories present in datadog
-  find:
+  ansible.builtin.find:
     paths: "{{ agent_dd_config_dir }}/conf.d/"
     patterns:
       - "*.d"
@@ -28,7 +28,7 @@
   when: datadog_manage_config and (datadog_disable_untracked_checks or datadog_disable_default_checks)
 
 - name: Delete checks not present in agent_datadog_tracked_checks
-  file:
+  ansible.builtin.file:
     path: "{{ agent_dd_config_dir }}/conf.d/{{ item }}.d/conf.yaml"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
@@ -36,7 +36,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Delete all default checks
-  file:
+  ansible.builtin.file:
     path: "{{ agent_dd_config_dir }}/conf.d/{{ item }}.d/conf.yaml.default"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
@@ -44,7 +44,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Delete all example checks
-  file:
+  ansible.builtin.file:
     path: "{{ agent_dd_config_dir }}/conf.d/{{ item }}.d/conf.yaml.example"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
@@ -52,7 +52,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Ensure configuration directories are present for each Datadog check
-  file:
+  ansible.builtin.file:
     dest: "{{ agent_dd_config_dir }}/conf.d/{{ item }}.d"
     state: directory
     owner: "{{ agent_dd_user }}"
@@ -62,7 +62,7 @@
   when: datadog_manage_config
 
 - name: Create a configuration file for each Datadog check
-  template:
+  ansible.builtin.template:
     src: checks.yaml.j2
     dest: "{{ agent_dd_config_dir }}/conf.d/{{ item }}.d/conf.yaml"
     mode: "0640"
@@ -73,7 +73,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Remove old configuration file for each Datadog check
-  file:
+  ansible.builtin.file:
     dest: "{{ agent_dd_config_dir }}/conf.d/{{ item }}.yaml"
     state: absent
   with_items: "{{ agent_datadog_checks | list }}"
@@ -81,7 +81,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Create custom check file for each custom check
-  copy:
+  ansible.builtin.copy:
     src: "{{ datadog_custom_checks[item] }}"
     dest: "{{ agent_dd_config_dir }}/checks.d/{{ item }}.py"
     mode: "0755"
@@ -91,7 +91,7 @@
   notify: "{{ agent_dd_notify_agent }}"
 
 - name: Create installation information file
-  template:
+  ansible.builtin.template:
     src: install_info.j2
     dest: "{{ agent_dd_config_dir }}/install_info"
     owner: "{{ agent_dd_user }}"
