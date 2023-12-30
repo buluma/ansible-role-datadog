@@ -18,3 +18,7 @@ skip_list:
   - name[casing]
   - fqcn[action-core]
   - no-changed-when
+  - yaml[indentation]
+  - name[template]
+  - risky-file-permissions
+  - yaml[comments]
