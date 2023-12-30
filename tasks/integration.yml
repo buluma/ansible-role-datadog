@@ -1,35 +1,35 @@
 ---
-- name: set agent binary path (windows)
+- name: integration | Set agent binary path (windows)
   ansible.builtin.set_fact:
     datadog_agent_binary_path: "{{ datadog_agent_binary_path_windows }}"
   when: ansible_facts.os_family == "Windows"
 
-- name: set agent binary path (unix)
+- name: integration | Set agent binary path (unix)
   ansible.builtin.set_fact:
     datadog_agent_binary_path: "{{ datadog_agent_binary_path_linux }}"
   when: ansible_facts.os_family != "Windows" and ansible_facts.os_family != "Darwin"
 
-- name: set agent binary path (macOS)
+- name: integration | Set agent binary path (macOS)
   ansible.builtin.set_fact:
     datadog_agent_binary_path: "{{ datadog_agent_binary_path_macos }}"
   when: ansible_facts.os_family == "Darwin"
 
-- name: set agent user for integration commmand (windows)
+- name: integration | Set agent user for integration commmand (windows)
   ansible.builtin.set_fact:
     integration_command_user: "{{ integration_command_user_windows }}"
   when: ansible_facts.os_family == "Windows"
 
-- name: set agent user for integration commmand (unix)
+- name: integration | Set agent user for integration commmand (unix)
   ansible.builtin.set_fact:
     integration_command_user: "{{ integration_command_user_linux }}"
   when: ansible_facts.os_family != "Windows" and ansible_facts.os_family != "Darwin"
 
-- name: set agent user for integration commmand (macOS)
+- name: integration | Set agent user for integration commmand (macOS)
   ansible.builtin.set_fact:
     integration_command_user: "{{ integration_command_user_macos }}"
   when: ansible_facts.os_family == "Darwin"
 
-- name: Validate integrations actions
+- name: integration | Validate integrations actions
   ansible.builtin.fail:
     msg: "Unkown action '{{ item.value.action }}' for integration command ({{ item.key }}). Valid actions are 'install' and 'remove'"
   when: item.value.action != "install" and item.value.action != "remove"
@@ -37,7 +37,7 @@
 
 # Remove Integrations
 
-- name: Removing integrations (Unix, macOS)
+- name: integration | Removing integrations (Unix, macOS)
   ansible.builtin.command:
     argv:
       - "{{ datadog_agent_binary_path }}"
@@ -49,7 +49,7 @@
   loop: "{{ datadog_integration|dict2items }}"
   when: item.value.action == "remove" and ansible_facts.os_family != "Windows"
 
-- name: Removing integrations (Windows)
+- name: integration | Removing integrations (Windows)
   win_command: "\"{{ datadog_agent_binary_path }}\" integration remove {{ item.key }}"
   become: yes
   become_user: "{{ integration_command_user }}"
@@ -58,7 +58,7 @@
 
 # Install integrations
 
-- name: Install pinned version of integrations (Unix)
+- name: integration | Install pinned version of integrations (Unix)
   command: "{{ datadog_agent_binary_path }} integration install {{ third_party }} {{ item.key }}=={{ item.value.version }}"
   become: yes
   become_user: "{{ integration_command_user }}"
@@ -67,7 +67,7 @@
   loop: "{{ datadog_integration|dict2items }}"
   when: item.value.action == "install" and ansible_facts.os_family != "Windows" and ansible_facts.os_family != "Darwin"
 
-- name: Install pinned version of integrations (Windows)
+- name: integration | Install pinned version of integrations (Windows)
   win_command: "\"{{ datadog_agent_binary_path }}\" integration install {{ third_party }} {{ item.key }}=={{ item.value.version }}"
   become: yes
   vars:
@@ -76,7 +76,7 @@
   loop: "{{ datadog_integration|dict2items }}"
   when: item.value.action == "install" and ansible_facts.os_family == "Windows"
 
-- name: Install pinned version of integrations (macOS)
+- name: integration | Install pinned version of integrations (macOS)
   command: "{{ datadog_agent_binary_path }} integration install {{ third_party }} {{ item.key }}=={{ item.value.version }}"
   become: yes
   become_user: "{{ integration_command_user }}"
