@@ -71,7 +71,7 @@
     groupname: "{{ macos_user_group.stdout }}"
 
 - name: Include configuration setup tasks
-  import_tasks: "_agent-linux-macos-shared.yml"
+  ansible.builtin.import_tasks: "_agent-linux-macos-shared.yml"
   vars:
     _dd_config_dir: "{{ datadog_macos_etc_dir }}"
     _dd_user: "{{ macos_user_data.uid }}"

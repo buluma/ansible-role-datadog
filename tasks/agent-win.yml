@@ -17,7 +17,7 @@
   when: datadog_manage_config and (datadog_disable_untracked_checks or datadog_disable_default_checks)
 
 - name: Delete checks not present in datadog_tracked_checks
-  win_file:
+  ansible.windows.win_file:
     path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml"
     state: absent
   loop: "{{ datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
@@ -25,7 +25,7 @@
   notify: restart datadog-agent-win
 
 - name: Delete default checks
-  win_file:
+  ansible.windows.win_file:
     path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.default"
     state: absent
   loop: "{{ datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
@@ -33,7 +33,7 @@
   notify: restart datadog-agent-win
 
 - name: Ensure configuration directories are present for each Datadog check
-  win_file:
+  ansible.windows.win_file:
     path: "{{ datadog_windows_config_root }}\\conf.d\\{{ item }}.d"
     state: directory
   with_items: '{{ datadog_checks|list }}'
@@ -48,7 +48,7 @@
   notify: restart datadog-agent-win
 
 - name: Remove old configuration file for each Datadog check
-  win_file:
+  ansible.windows.win_file:
     path: "{{ datadog_windows_config_root }}\\conf.d\\{{ item }}.yaml"
     state: absent
   with_items: "{{ datadog_checks|list }}"
@@ -56,7 +56,7 @@
   notify: restart datadog-agent-win
 
 - name: Create custom check file for each custom check
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ datadog_custom_checks[item] }}"
     dest: "{{ datadog_windows_config_root }}\\checks.d\\{{ item }}.py"
   with_items: "{{ datadog_custom_checks|list }}"
