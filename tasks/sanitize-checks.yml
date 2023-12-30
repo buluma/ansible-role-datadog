@@ -1,13 +1,13 @@
 ---
-- name: sanitize-checks | Defend against defined but null datadog_checks variable
-  ansible.builtin.set_fact:
-      datadog_checks: "{{ datadog_checks | default({}, true) }}"
+- name: Defend against defined but null datadog_checks variable
+  set_fact:
+    agent_datadog_checks: "{{ datadog_checks | default({}, true) }}"
 
-- name: sanitize-checks | Resolve datadog_tracked_checks
-  ansible.builtin.set_fact:
-    datadog_tracked_checks: "{{ datadog_checks | list + datadog_additional_checks | default([], true) }}"
+- name: Resolve agent_datadog_tracked_checks
+  set_fact:
+    agent_datadog_tracked_checks: "{{ agent_datadog_checks | list + datadog_additional_checks | default([], true) }}"
 
-- name: sanitize-checks | Check that datadog_checks is a mapping
-  ansible.builtin.assert:
+- name: Check that agent_datadog_checks is a mapping
+  assert:
     that:
-      - datadog_checks is mapping
+      - agent_datadog_checks is mapping
