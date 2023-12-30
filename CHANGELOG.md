@@ -4,9 +4,15 @@
 
 [Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.1.1...HEAD)
 
+**Implemented enhancements:**
+
+- should have permissions set to only be readable by owner [\#8](https://github.com/buluma/ansible-role-datadog/issues/8)
+
 **Closed issues:**
 
 - Update buluma/todo-to-issue-action@v1.0.1 @buluma [\#7](https://github.com/buluma/ansible-role-datadog/issues/7)
+- Update action [\#6](https://github.com/buluma/ansible-role-datadog/issues/6)
+- rebuild action [\#5](https://github.com/buluma/ansible-role-datadog/issues/5)
 - \[ANS-48\] fix linting issues on molecule level [\#1](https://github.com/buluma/ansible-role-datadog/issues/1)
 
 ## [0.1.1](https://github.com/buluma/ansible-role-datadog/tree/0.1.1) (2022-08-23)
