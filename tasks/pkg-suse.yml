@@ -121,13 +121,22 @@
 
 # refresh zypper repos only if the template changed
 - name: pkg-suse | refresh Datadog zypper_repos  # noqa 503
-  command: zypper refresh datadog
+  ansible.builtin.command: zypper refresh datadog
   when: datadog_zypper_repo.changed and not ansible_check_mode
-  args:
-    warn: false  # silence warning about using zypper directly
 
-- include_tasks: pkg-suse/install-pinned.yml
+- name: Import pkg-suse/install-pinned.yml
+  ansible.builtin.import_tasks:
+    file: pkg-suse/install-pinned.yml
   when: datadog_agent_suse_version is defined
 
-- include_tasks: pkg-suse/install-latest.yml
+# - include_tasks: pkg-suse/install-pinned.yml
+#   when: datadog_agent_suse_version is defined
+
+
+- name: Import pkg-suse/install-latest.yml
+  ansible.builtin.import_tasks:
+    file: pkg-suse/install-latest.yml
   when: datadog_agent_suse_version is not defined
+
+# - include_tasks: pkg-suse/install-latest.yml
+#   when: datadog_agent_suse_version is not defined
