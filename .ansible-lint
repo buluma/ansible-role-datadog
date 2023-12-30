@@ -27,3 +27,4 @@ skip_list:
   - fqcn[action]
   - jinja[spacing]
   - name[missing]
+  - key-order[task]
