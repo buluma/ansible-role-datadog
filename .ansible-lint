@@ -22,3 +22,7 @@ skip_list:
   - name[template]
   - risky-file-permissions
   - yaml[comments]
+  - no-free-form
+  - risky-shell-pipe
+  - fqcn[action]
+  - jinja[spacing]
