@@ -70,15 +70,13 @@ The default values for the variables are set in [`defaults/main.yml`](https://gi
 
 ```yaml
 ---
-# defaults file for datadog
-
-role_version: 4.16.0
+role_version: 4.21.0
 
 # define if the datadog-agent services should be enabled
-datadog_enabled: yes
+datadog_enabled: true
 
 # Whether the datadog.conf / datadog.yaml, system-probe.yaml, security-agent.yaml and checks config under conf.d are managed by Ansible
-datadog_manage_config: yes
+datadog_manage_config: true
 
 # default datadog.conf / datadog.yaml options
 datadog_config: {}
@@ -86,6 +84,7 @@ datadog_config: {}
 # default system-probe.yaml options
 system_probe_config: {}
 network_config: {}
+service_monitoring_config: {}
 
 # default checks enabled
 datadog_checks: {}
@@ -101,6 +100,9 @@ datadog_additional_checks: []
 
 # set this to `true` to delete default checks
 datadog_disable_default_checks: false
+
+# set this to `true` to delete example checks
+datadog_disable_example_checks: false
 
 # default user/group
 datadog_user: dd-agent
@@ -132,6 +134,9 @@ datadog_agent_version: ""
 # Default Package name for APT and RPM installs - can override in playbook for IOT Agent
 datadog_agent_flavor: "datadog-agent"
 
+# Default Package name for APM Library Injection APT and RPM installs.
+datadog_inject_apm_flavor: "datadog-apm*"
+
 # Default apt repo and keyserver
 
 # By default, the role uses the official apt Datadog repository for the chosen major version
@@ -141,17 +146,32 @@ datadog_apt_repo: ""
 datadog_apt_cache_valid_time: 3600
 datadog_apt_key_retries: 5
 
+# DATADOG_RPM_KEY.public (4172A230) is only useful to install old (< 6.14) Agent packages.
+# We no longer add it and we explicitly remove it.
+datadog_rpm_remove_keys: [4172A230]
+
 # Default yum repo and keys
+
+# By default, the role configures a yum repository for installing the Datadog agent package
+# Use the datadog_yum_repo_setup_enabled toggle to disable this configuration
+# WARNING: if you use this option, you will have to manually maintain the list of GPG
+# signing keys used to sign the packages and update it as necessary by yourself
+datadog_yum_repo_config_enabled: true
 
 # By default, the role uses the official yum Datadog repository for the chosen major version
 # Use the datadog_yum_repo variable to override the repository used.
 datadog_yum_repo: ""
 
+# Set these variables if the Datadog yum repo should be accessed via proxy
+datadog_yum_repo_proxy: ""
+datadog_yum_repo_proxy_username: ""
+datadog_yum_repo_proxy_password: ""
+
 datadog_yum_repo_gpgcheck: ""
-datadog_yum_gpgcheck: yes
+datadog_yum_gpgcheck: true
 # NOTE: we don't use URLs starting with https://keys.datadoghq.com/, as Python
 # on older CentOS/RHEL/SUSE doesn't support SNI and get_url would fail on them
-datadog_yum_gpgkey: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY.public"
+
 # the CURRENT key always contains the key that is used to sign repodata and latest packages
 datadog_yum_gpgkey_current: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_CURRENT.public"
 # this key expires in 2022
@@ -160,7 +180,9 @@ datadog_yum_gpgkey_e09422b3_sha256sum: "694a2ffecff85326cc08e5f1a619937999a59131
 # this key expires in 2024
 datadog_yum_gpgkey_20200908: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_FD4BF915.public"
 datadog_yum_gpgkey_20200908_sha256sum: "4d16c598d3635086762bd086074140d947370077607db6d6395b8523d5c23a7d"
-# Default zypper repo and keys
+# this key expires in 2028
+datadog_yum_gpgkey_20280418: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_B01082D3.public"
+datadog_yum_gpgkey_20280418_sha256sum: "d309232f05bcfb5df7fce1a22b0920476254135083058206978aa57910698101"
 
 # By default, we fail early & print a helpful message if an older Ansible version and Python 3
 # interpreter is used on CentOS < 8. The 'yum' module is only available on Python 2, and the 'python3-dnf'
@@ -173,15 +195,18 @@ datadog_ignore_old_centos_python3_error: false
 # Use the datadog_zypper_repo variable to override the repository used.
 datadog_zypper_repo: ""
 
+# Define if the official zypper Datadog repository services should be installed
+datadog_manage_zypper_repofile: true
+
 datadog_zypper_repo_gpgcheck: ""
-datadog_zypper_gpgcheck: yes
-datadog_zypper_gpgkey: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY.public"
-datadog_zypper_gpgkey_sha256sum: "00d6505c33fd95b56e54e7d91ad9bfb22d2af17e5480db25cba8fee500c80c46"
+datadog_zypper_gpgcheck: true
 datadog_zypper_gpgkey_current: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_CURRENT.public"
 datadog_zypper_gpgkey_e09422b3: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_E09422B3.public"
 datadog_zypper_gpgkey_e09422b3_sha256sum: "694a2ffecff85326cc08e5f1a619937999a5913171e42f166e13ec802c812085"
 datadog_zypper_gpgkey_20200908: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_FD4BF915.public"
 datadog_zypper_gpgkey_20200908_sha256sum: "4d16c598d3635086762bd086074140d947370077607db6d6395b8523d5c23a7d"
+datadog_zypper_gpgkey_20280418: "https://s3.amazonaws.com/public-signing-keys/DATADOG_RPM_KEY_B01082D3.public"
+datadog_zypper_gpgkey_20280418_sha256sum: "d309232f05bcfb5df7fce1a22b0920476254135083058206978aa57910698101"
 
 # Avoid checking if the agent is running or not. This can be useful if you're
 # using sysvinit and providing your own init script.
@@ -190,7 +215,7 @@ datadog_skip_running_check: false
 # Set this to `yes` to allow agent downgrades on apt-based platforms.
 # Internally, this uses `apt-get`'s `--force-yes` option. Use with caution.
 # On centos this will only work with ansible 2.4 and up
-datadog_agent_allow_downgrade: no
+datadog_agent_allow_downgrade: false
 
 # Default windows latest msi package URL
 
@@ -230,6 +255,21 @@ datadog_windows_config_root: "{{ ansible_facts.env['ProgramData'] }}\\Datadog"
 # arguments to supply to the windows installer.
 win_install_args: " "
 
+# Configure APM host injection. Possible values are: "all", "host" or "docker".
+datadog_apm_instrumentation_enabled: ""
+
+# List of APM libraries to install if host or Docker injection is enabled.
+# You can see the available values in our official docs: https://docs.datadoghq.com/tracing/trace_collection/library_injection_local
+datadog_apm_instrumentation_languages: ["all"]
+
+# Configure Docker APM injection.
+# See: https://docs.datadoghq.com/tracing/trace_collection/library_injection_local/?tab=agentandappinseparatecontainers#configure-docker-injection
+datadog_apm_instrumentation_docker_config:
+  library_inject: true
+  log_level: info
+  output_paths:
+    - stderr
+  config_sources: BASIC
 
 #
 # Internal variables
@@ -248,6 +288,8 @@ datadog_apt_default_keys:
     value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_382E94DE.public
   - key: D75CEA17048B9ACBF186794B32637D44F14F620E
     value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_F14F620E.public
+  - key: 5F1E256061D813B125E156E8E6266D4AC0962C7D
+    value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_C0962C7D.public
 
 # The default apt repository for each major Agent version is specified in the following variables.
 datadog_agent5_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ stable main"
@@ -315,9 +357,9 @@ This role has been tested on these [container images](https://hub.docker.com/u/b
 
 |container|tags|
 |---------|----|
-|[Ubuntu](https://hub.docker.com/repository/docker/buluma/ubuntu/general)|all|
-|[Debian](https://hub.docker.com/repository/docker/buluma/debian/general)|all|
-|[EL](https://hub.docker.com/repository/docker/buluma/enterpriselinux/general)|8, 7|
+|[Ubuntu](https://hub.docker.com/repository/docker/buluma/ubuntu/general)|bionic, focal|
+|[Debian](https://hub.docker.com/repository/docker/buluma/debian/general)|bullseye, buster|
+|[EL](https://hub.docker.com/repository/docker/buluma/enterpriselinux/general)|all|
 |[Amazon](https://hub.docker.com/repository/docker/buluma/amazonlinux/general)|all|
 |[Fedora](https://hub.docker.com/repository/docker/buluma/fedora/general)|all|
 |[opensuse](https://hub.docker.com/repository/docker/buluma/opensuse/general)|all|

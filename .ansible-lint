@@ -28,3 +28,7 @@ skip_list:
   - jinja[spacing]
   - name[missing]
   - key-order[task]
+  - fqcn
+
+enable_list:
+  - empty-string-compare

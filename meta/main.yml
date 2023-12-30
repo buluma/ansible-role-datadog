@@ -5,20 +5,22 @@ galaxy_info:
   description: Install and configure Datadog on your systems.
   company: ShadowNet
   license: Apache-2.0
+  github_branch: master
 
   min_ansible_version: "2.12"
 
   platforms:
     - name: Ubuntu
       versions:
-        - all
+        - bionic
+        - focal
     - name: Debian
       versions:
-        - all
+        - bullseye
+        - buster
     - name: EL
       versions:
-        - "8"
-        - "7"
+        - all
     - name: Amazon
       versions:
         - all
