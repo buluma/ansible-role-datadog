@@ -13,9 +13,11 @@ molecule:
   parallel:
     matrix:
       - image: "docker-ubuntu-systemd"
-        tag: "bionic"
+        tag: "latest"
       - image: "docker-ubuntu-systemd"
         tag: "focal"
+      - image: "docker-ubuntu-systemd"
+        tag: "lunar"
       - image: "debian-systemd"
         tag: "bullseye"
       - image: "debian-systemd"
