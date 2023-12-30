@@ -136,8 +136,12 @@
     state: absent
   with_items: [ 5, 6, 7, "custom" ]
 
-- include_tasks: pkg-redhat/install-pinned.yml
+- name:
+  ansible.builtin.import_tasks:
+    file: pkg-redhat/install-pinned.yml
   when: datadog_agent_redhat_version is defined
 
-- include_tasks: pkg-redhat/install-latest.yml
+- name: Import pkg-redhat/install-latest.yml
+  ansible.builtin.import_tasks:
+    file: pkg-redhat/install-latest.yml
   when: datadog_agent_redhat_version is not defined

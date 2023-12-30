@@ -24,54 +24,72 @@
 # - name: Check if OS is supported
 #   include_tasks: os-check.yml
 
-- name: Resolve datadog_tracked_checks later to defend against variable presidence issues arising from dynamically included null datadog_checks
-  include_tasks: sanitize-checks.yml
+- name: Resolve datadog_tracked_checks to defend against variable presidence issues
+  ansible.builtin.import_tasks:
+    file: sanitize-checks.yml
+
+# - name: Resolve datadog_tracked_checks later to defend against variable presidence issues arising from dynamically included null datadog_checks
+#   include_tasks: sanitize-checks.yml
 
 # Also sets datadog_skip_install
 - name: Set Facts for Datadog Agent Major Version
-  include_tasks: set-parse-version.yml
+  ansible.builtin.import_tasks:
+    file: set-parse-version.yml
+
+# - name: Set Facts for Datadog Agent Major Version
+#   include_tasks: set-parse-version.yml
 
 - name: Debian Install Tasks
-  include_tasks: pkg-debian.yml
+  ansible.builtin.import_tasks:
+    file: pkg-debian.yml
   when: ansible_facts.os_family == "Debian" and not datadog_skip_install
 
 # Only Ansible >= 3.0 knows that AlmaLinux belongs to "RedHat" family
 # (and latest bugfix releases of some 2.X)
 # For Rocky it is some 4.X and >= 5.0
 - name: RedHat Install Tasks
-  include_tasks: pkg-redhat.yml
+  ansible.builtin.import_tasks:
+    file: pkg-redhat.yml
   when: ansible_facts.os_family in ["RedHat", "Rocky", "AlmaLinux"] and not datadog_skip_install
 
 - name: Suse Install Tasks
-  include_tasks: pkg-suse.yml
+  ansible.builtin.import_tasks:
+    file: pkg-suse.yml
   when: ansible_facts.os_family == "Suse" and not datadog_skip_install
 
 # Note we don't check datadog_skip_install variable value for windows here,
 # because some tasks in pkg-windows.yml are carried out regardless of its value.
 - name: Windows Install Tasks
-  include_tasks: pkg-windows.yml
+  ansible.builtin.import_tasks:
+    file: pkg-windows.yml
   when: ansible_facts.os_family == "Windows"
 
 - name: macOS Install Tasks
-  include_tasks: pkg-macos.yml
+  ansible.builtin.import_tasks:
+    file: pkg-macos.yml
   when: ansible_facts.os_family == "Darwin" and not datadog_skip_install
 
 - name: Linux Configuration Tasks (Agent 5)
-  include_tasks: agent5-linux.yml
+  ansible.builtin.import_tasks:
+    file: agent5-linux.yml
   when: datadog_agent_major_version | int == 5 and ansible_facts.os_family != "Windows"  and ansible_facts.os_family != "Darwin"
 
 - name: Linux Configuration Tasks
-  include_tasks: agent-linux.yml
+  ansible.builtin.import_tasks:
+    file: agent-linux.yml
   when: datadog_agent_major_version | int > 5 and ansible_facts.os_family != "Windows" and ansible_facts.os_family != "Darwin"
 
 - name: Windows Configuration Tasks
-  include_tasks: agent-win.yml
+  ansible.builtin.import_tasks:
+    file: agent-win.yml
   when: datadog_agent_major_version | int > 5 and ansible_facts.os_family == "Windows"
 
 - name: macOS Configuration Tasks
-  include_tasks: agent-macos.yml
+  ansible.builtin.import_tasks:
+    file: agent-macos.yml
   when: ansible_facts.os_family == "Darwin"
 
 - name: Integrations Tasks
-  include_tasks: integration.yml
+  ansible.builtin.import_tasks:
+    file: integration.yml
   when: datadog_integration is defined
