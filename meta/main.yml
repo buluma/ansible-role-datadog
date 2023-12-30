@@ -22,6 +22,9 @@ galaxy_info:
     - name: Amazon
       versions:
         - all
+    - name: Fedora
+      versions:
+        - all
     - name: opensuse
       versions:
         - all

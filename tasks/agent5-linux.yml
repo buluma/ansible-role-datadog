@@ -14,7 +14,7 @@
     group: "{{ datadog_group }}"
     mode: 0644 #FIXME: should have permissions set to only be readable by owner
   when: datadog_manage_config
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
 
 - name: agent5-linux | (agent5) Ensure datadog-agent is running
   ansible.builtin.service:
@@ -54,7 +54,7 @@
     state: absent
   loop: "{{ datadog_conf_files.files | map(attribute='path') | list | map('basename') | list | map('regex_replace', '^(.*).yaml$', '\\1') | list }}"
   when: datadog_manage_config and datadog_disable_untracked_checks and item not in datadog_tracked_checks
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
 
 - name: agent5-linux | Delete default checks
   ansible.builtin.file:
@@ -63,7 +63,7 @@
   loop: "{{ datadog_conf_files_default.files | map(attribute='path') | list
              | map('basename') | list | map('regex_replace', '^(.*).yaml.default$', '\\1') | list }}"
   when: datadog_manage_config and datadog_disable_default_checks and item not in datadog_tracked_checks
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
 
 - name: agent5-linux | (agent5) Create a configuration file for each Datadog check
   ansible.builtin.template:
@@ -71,7 +71,7 @@
     dest: "/etc/dd-agent/conf.d/{{ item }}.yaml"
     owner: "{{ datadog_user }}"
     group: "{{ datadog_group }}"
-    mode: 0644 #FIXME: should have permissions set to only be readable by owner
+    mode: 0644 #TODO: should have permissions set to only be readable by owner
   with_items: "{{ datadog_checks|list }}"
   when: datadog_manage_config
-  notify: restart datadog-agent
+  notify: Restart datadog-agent

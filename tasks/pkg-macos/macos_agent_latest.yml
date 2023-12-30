@@ -1,5 +1,4 @@
 ---
-
 - name: Set agent download filename to custom URL
   ansible.builtin.set_fact:
     dd_download_url: "{{ datadog_macos_download_url }}"

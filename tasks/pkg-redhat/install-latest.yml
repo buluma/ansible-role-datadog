@@ -6,7 +6,7 @@
     state: latest  # noqa 403
   register: datadog_agent_install
   when: not ansible_check_mode and ansible_pkg_mgr == "dnf"
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
 
 - name: Install latest datadog-agent package (yum)
   ansible.builtin.yum:
@@ -15,4 +15,4 @@
     state: latest  # noqa 403
   register: datadog_agent_install
   when: not ansible_check_mode and ansible_pkg_mgr == "yum"
-  notify: restart datadog-agent
+  notify: Restart datadog-agent

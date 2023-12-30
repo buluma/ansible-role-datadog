@@ -16,7 +16,7 @@
 - name: agent-linux | Add "{{ datadog_user }}" user to additional groups
   user: name="{{ datadog_user }}" groups="{{ datadog_additional_groups }}" append=yes
   when: datadog_additional_groups | default([], true) | length > 0
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
 
 - name: agent-linux | Include configuration setup tasks
   include_tasks: "_agent-linux-macos-shared.yml"
@@ -24,7 +24,7 @@
     _dd_config_dir: /etc/datadog-agent
     _dd_user: "{{ datadog_user }}"
     _dd_group: "{{ datadog_group }}"
-    _dd_notify_agent: "restart datadog-agent"
+    _dd_notify_agent: "Restart datadog-agent"
 
 - name: agent-linux | Create system-probe configuration file
   ansible.builtin.template:
