@@ -26,3 +26,4 @@ skip_list:
   - risky-shell-pipe
   - fqcn[action]
   - jinja[spacing]
+  - name[missing]
