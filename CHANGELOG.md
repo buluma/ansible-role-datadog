@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.3](https://github.com/buluma/ansible-role-datadog/tree/0.1.3) (2023-12-30)
+
+[Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.1.2...0.1.3)
+
 ## [0.1.2](https://github.com/buluma/ansible-role-datadog/tree/0.1.2) (2023-12-30)
 
 [Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.1.1...0.1.2)
