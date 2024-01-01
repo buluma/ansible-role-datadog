@@ -5,4 +5,3 @@ ansible-lint == 6.*
 paramiko == 3.*
 # Pinning requests version due to [bug](https://github.com/docker/docker-py/issues/3113)
 # requests == 2.28.1
-galaxy-importer==0.4.14
