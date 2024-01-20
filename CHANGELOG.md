@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased](https://github.com/buluma/ansible-role-datadog/tree/HEAD)
+
+[Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.2.0...HEAD)
+
+**Merged pull requests:**
+
+- Bump buluma/molecule-action from 6.0.0 to 6.0.1 [\#12](https://github.com/buluma/ansible-role-datadog/pull/12) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/checkout from 3 to 4 [\#10](https://github.com/buluma/ansible-role-datadog/pull/10) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [0.2.0](https://github.com/buluma/ansible-role-datadog/tree/0.2.0) (2024-01-02)
 
 [Full Changelog](https://github.com/buluma/ansible-role-datadog/compare/0.1.3...0.2.0)
