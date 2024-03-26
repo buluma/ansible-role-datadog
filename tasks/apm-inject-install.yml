@@ -8,14 +8,14 @@
   when: not ansible_check_mode and ansible_facts.os_family in ["RedHat", "Rocky", "AlmaLinux"]
 
 - name: Check if dd-host-install needs to run
-  command: dd-host-install --no-config-change --no-agent-restart --dry-run
+  command: dd-host-install --false-config-change --false-agent-restart --dry-run
   register: agent_dd_host_install_cmd
   changed_when: false
   when: not ansible_check_mode and datadog_apm_instrumentation_enabled in ["all", "host"]
   failed_when: agent_dd_host_install_cmd.rc >= 2
 
 - name: Run APM host injection setup script
-  command: dd-host-install --no-config-change --no-agent-restart
+  command: dd-host-install --false-config-change --false-agent-restart
   notify: restart datadog-agent
   when: not ansible_check_mode and datadog_apm_instrumentation_enabled in ["all", "host"] and agent_dd_host_install_cmd.rc == 1
   changed_when: true

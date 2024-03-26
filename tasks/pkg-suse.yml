@@ -3,7 +3,7 @@
   ansible.builtin.set_fact:
     agent_do_zypper_repo_gpgcheck: >-
       {{ datadog_zypper_repo_gpgcheck if datadog_zypper_repo_gpgcheck != '' else (
-        'yes' if datadog_zypper_repo == '' and agent_datadog_agent_major_version|int != 5 else 'no'
+        'true' if datadog_zypper_repo == '' and agent_datadog_agent_major_version|int != 5 else 'false'
       ) }}
 
 - name: Check and download RPM Key(SLES11) # Work around due to SNI check for SLES11
@@ -131,7 +131,7 @@
   when: datadog_manage_zypper_repofile
 
 # refresh zypper repos only if the template changed
-- name: Refresh Datadog zypper_repos # noqa no-handler args[module] (args.warn is deprecated since Ansible 2.11)
+- name: Refresh Datadog zypper_repos # noqa false-handler args[module] (args.warn is deprecated since Ansible 2.11)
   command: zypper refresh datadog
   when: agent_datadog_zypper_repo_template.changed and not ansible_check_mode
   # args:

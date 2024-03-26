@@ -132,7 +132,7 @@
 # Templates don't support the "state: absent" argument, so if the file was created in a previous run
 # and then runtime_security_config was completely removed, this is the only way to ensure
 # we remove the leftover config file.
-- name: Remove security-agent configuration file if security-agent is no longer configured
+- name: Remove security-agent configuration file if security-agent is false longer configured
   ansible.builtin.file:
     path: /etc/datadog-agent/security-agent.yaml
     state: absent

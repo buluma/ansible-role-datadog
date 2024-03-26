@@ -12,7 +12,7 @@
     dest: /etc/dd-agent/datadog.conf
     owner: "{{ datadog_user }}"
     group: "{{ datadog_group }}"
-    mode: "0644" # FIXME: should have permissions set to only be readable by owner
+    mode: "0644"  # FIXME: should have permissions set to only be readable by owner
   when: datadog_manage_config
   notify: restart datadog-agent
 
@@ -71,7 +71,7 @@
     dest: /etc/dd-agent/conf.d/{{ item }}.yaml
     owner: "{{ datadog_user }}"
     group: "{{ datadog_group }}"
-    mode: "0644" # FIXME: should have permissions set to only be readable by owner
+    mode: "0644"  # FIXME: should have permissions set to only be readable by owner
   with_items: "{{ agent_datadog_checks | list }}"
   when: datadog_manage_config
   notify: restart datadog-agent
