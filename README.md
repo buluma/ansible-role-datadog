@@ -54,8 +54,8 @@ The machine needs to be prepared. In CI this is done using [`molecule/default/pr
 ---
 - name: Prepare
   hosts: all
-  gather_facts: no
-  become: yes
+  gather_facts: false
+  become: true
 
   roles:
     - role: buluma.bootstrap
@@ -70,7 +70,7 @@ The default values for the variables are set in [`defaults/main.yml`](https://gi
 
 ```yaml
 ---
-role_version: 4.21.0
+role_version: "4.21.0"
 
 # define if the datadog-agent services should be enabled
 datadog_enabled: true
@@ -144,10 +144,9 @@ datadog_inject_apm_flavor: "datadog-apm*"
 datadog_apt_repo: ""
 
 datadog_apt_cache_valid_time: 3600
-datadog_apt_key_retries: 5
 
 # DATADOG_RPM_KEY.public (4172A230) is only useful to install old (< 6.14) Agent packages.
-# We no longer add it and we explicitly remove it.
+# We false longer add it and we explicitly remove it.
 datadog_rpm_remove_keys: [4172A230]
 
 # Default yum repo and keys
@@ -212,8 +211,8 @@ datadog_zypper_gpgkey_20280418_sha256sum: "d309232f05bcfb5df7fce1a22b09204762541
 # using sysvinit and providing your own init script.
 datadog_skip_running_check: false
 
-# Set this to `yes` to allow agent downgrades on apt-based platforms.
-# Internally, this uses `apt-get`'s `--force-yes` option. Use with caution.
+# Set this to `true` to allow agent downgrades on apt-based platforms.
+# Internally, this uses `apt-get`'s `--force-true` option. Use with caution.
 # On centos this will only work with ansible 2.4 and up
 datadog_agent_allow_downgrade: false
 
