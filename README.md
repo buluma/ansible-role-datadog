@@ -356,8 +356,6 @@ This role has been tested on these [container images](https://hub.docker.com/u/b
 
 |container|tags|
 |---------|----|
-|[Ubuntu](https://hub.docker.com/r/buluma/ubuntu)|all|
-|[Debian](https://hub.docker.com/r/buluma/debian)|bullseye, buster|
 |[EL](https://hub.docker.com/r/buluma/enterpriselinux)|all|
 |[Amazon](https://hub.docker.com/r/buluma/amazonlinux)|all|
 |[opensuse](https://hub.docker.com/r/buluma/opensuse)|all|

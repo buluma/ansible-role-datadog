@@ -46,18 +46,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - image: "docker-molecule-images"
-            tag: "focal"
-          - image: "docker-molecule-images"
-            tag: "bionic"
-          - image: "docker-molecule-images"
-            tag: "jammy"
-          - image: "docker-molecule-images"
-            tag: "lunar"
-          - image: "docker-molecule-images"
-            tag: "bullseye"
-          - image: "docker-molecule-images"
-            tag: "buster"
           - image: "enterpriselinux"
             tag: "8"
           - image: "enterpriselinux"
