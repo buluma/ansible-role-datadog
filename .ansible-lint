@@ -13,22 +13,5 @@ exclude_paths:
   - .github
   - requirements.yml
 
-skip_list:
-  - yaml[truthy]
-  - name[casing]
-  - fqcn[action-core]
-  - no-changed-when
-  - yaml[indentation]
-  - name[template]
-  - risky-file-permissions
-  - yaml[comments]
-  - no-free-form
-  - risky-shell-pipe
-  - fqcn[action]
-  - jinja[spacing]
-  - name[missing]
-  - key-order[task]
-  - fqcn
-
 enable_list:
-  - empty-string-compare
+  - name[prefix]
