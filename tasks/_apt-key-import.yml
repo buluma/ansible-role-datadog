@@ -5,7 +5,7 @@
     agent_keyring_url: "{{ item.value }}"
 
 - name: Find out whether key is already imported, key = {{ agent_key_fingerprint }}
-  ansible.builtin.ansible.builtin.shell:
+  ansible.builtin.shell::
     cmd: >
       set -o pipefail &&
       gpg --false-default-keyring --keyring {{ datadog_apt_usr_share_keyring }}
@@ -45,13 +45,13 @@
 
 # gpg --dearmor called on a binary keyring does nothing
 - name: Ensure downloaded file for key is a binary keyring, key={{ agent_key_fingerprint }}
-  ansible.builtin.ansible.builtin.shell: "cat {{ agent_tempdir.path }}/{{ agent_key_fingerprint }}
+  ansible.builtin.shell:: "cat {{ agent_tempdir.path }}/{{ agent_key_fingerprint }}
           | gpg --dearmor > {{ agent_tempdir.path }}/binary.gpg"  # noqa risky-shell-pipe
   when: agent_key_needs_import
   changed_when: false
 
 - name: Extract the required key from the binary keyring (when not {{ datadog_apt_key_current_name }})
-  ansible.builtin.ansible.builtin.shell: "gpg --false-default-keyring --keyring {{ agent_tempdir.path }}/binary.gpg
+  ansible.builtin.shell:: "gpg --false-default-keyring --keyring {{ agent_tempdir.path }}/binary.gpg
           --export {{ agent_key_fingerprint }} > {{ agent_tempdir.path }}/single.gpg"
   when: agent_key_fingerprint != datadog_apt_key_current_name and agent_key_needs_import
   changed_when: false
@@ -66,7 +66,7 @@
   changed_when: false
 
 - name: Import key to keyring, key,keyring={{ agent_key_fingerprint, datadog_apt_usr_share_keyring }}
-  ansible.builtin.ansible.builtin.shell: cat {{ agent_tempdir.path }}/single.gpg |
+  ansible.builtin.shell:: cat {{ agent_tempdir.path }}/single.gpg |
     gpg --false-default-keyring --keyring {{ datadog_apt_usr_share_keyring }} --import --batch  # noqa risky-shell-pipe
   when: agent_key_needs_import
   register: agent_key_import_result

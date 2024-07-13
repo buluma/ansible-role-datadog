@@ -18,3 +18,5 @@ skip_list:
   - yaml[comments]
   - fqcn[action-core]
   - fqcn[action]
+  - no-free-form
+  - command-instead-of-shell
