@@ -16,7 +16,7 @@ exclude_paths:
 skip_list:
   - name[prefix]
   - yaml[comments]
-  - fqcn[action-core]
-  - fqcn[action]
+  # - fqcn[action-core]
+  # - fqcn[action]
   - no-free-form
-  - command-instead-of-shell
+  # - command-instead-of-shell
