@@ -39,7 +39,7 @@
 # check the registry. On upgrade, the location of the config file root will
 # be set here.
 - name: Check existing config file Directory
-  win_reg_stat:
+  ansible.windows.win_reg_stat:
     path: HKLM:\SOFTWARE\Datadog\Datadog Agent
     name: ConfigRoot
   register: agent_config_root_from_registry
@@ -48,7 +48,7 @@
 # be set here.
 
 - name: Check existing installPath Directory
-  win_reg_stat:
+  ansible.windows.win_reg_stat:
     path: HKLM:\SOFTWARE\Datadog\Datadog Agent
     name: InstallPath
   register: agent_install_path_from_registry

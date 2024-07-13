@@ -58,7 +58,7 @@
   when: datadog_windows_program_files_dir | length > 0
 
 - name: Set default permissions on binary directory root (if not default)
-  win_acl:
+  ansible.windows.win_acl:
     path: "{{ datadog_windows_program_files_dir }}"
     inherit: ContainerInherit,ObjectInherit
     user: "BUILTIN\\USERS"
