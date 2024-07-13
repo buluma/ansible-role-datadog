@@ -1,24 +1,4 @@
 ---
-# We allow users to specify a file from which to import keys, so we expect
-# that to be a binary keyring; at the same time, we have ascii armored
-# individual keys at keys.datadoghq.com that we import. The below procedure
-# can be called for a URL pointing to a keyring or an ascii armored file
-# and extract and import a specific key from it (we specialcase the
-# DATADOG_APT_KEY_CURRENT value, which we always expect to be ascii
-# armored individual key).
-
-# NOTE: we use 'noqa risky-shell-pipe' throughout this file, because Debian's
-# default shell is /bin/sh which doesn't have a pipefail option and the
-# presence of a different shell isn't guaranteed.
-
-# NOTE: in order to display Ansible's `changed: [hostname]` properly throughout
-# tasks in this file, we added `changed_when: false` to a lot of them, even if
-# they actually run every time (e.g. importing the CURRENT key). The reason is
-# that they operate inside a temporary directory and they don't have a
-# permanent effect on the host (nothing will actually change on the host
-# whether these tasks run or not) except the last one - the actual import of
-# the key to `datadog_apt_usr_share_keyring`.
-
 - name: Set local variables for processed key {{ item.key }}
   ansible.builtin.set_fact:
     agent_key_fingerprint: "{{ item.key }}"
@@ -65,13 +45,13 @@
 
 # gpg --dearmor called on a binary keyring does nothing
 - name: Ensure downloaded file for key is a binary keyring, key={{ agent_key_fingerprint }}
-  shell: "cat {{ agent_tempdir.path }}/{{ agent_key_fingerprint }}
+  ansible.builtin.shell: "cat {{ agent_tempdir.path }}/{{ agent_key_fingerprint }}
           | gpg --dearmor > {{ agent_tempdir.path }}/binary.gpg"  # noqa risky-shell-pipe
   when: agent_key_needs_import
   changed_when: false
 
 - name: Extract the required key from the binary keyring (when not {{ datadog_apt_key_current_name }})
-  shell: "gpg --false-default-keyring --keyring {{ agent_tempdir.path }}/binary.gpg
+  ansible.builtin.shell: "gpg --false-default-keyring --keyring {{ agent_tempdir.path }}/binary.gpg
           --export {{ agent_key_fingerprint }} > {{ agent_tempdir.path }}/single.gpg"
   when: agent_key_fingerprint != datadog_apt_key_current_name and agent_key_needs_import
   changed_when: false
@@ -86,7 +66,7 @@
   changed_when: false
 
 - name: Import key to keyring, key,keyring={{ agent_key_fingerprint, datadog_apt_usr_share_keyring }}
-  shell: cat {{ agent_tempdir.path }}/single.gpg |
+  ansible.builtin.shell: cat {{ agent_tempdir.path }}/single.gpg |
     gpg --false-default-keyring --keyring {{ datadog_apt_usr_share_keyring }} --import --batch  # noqa risky-shell-pipe
   when: agent_key_needs_import
   register: agent_key_import_result
