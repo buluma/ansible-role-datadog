@@ -81,11 +81,11 @@
 # parsing the task would fail even if the host is not Windows. By hiding the task inside
 # a conditionally included file, we can prevent this.
 - name: Include Windows Agent version tasks
-  include_tasks: parse-version-windows.yml
+  ansible.builtin.include_tasks: parse-version-windows.yml
   when: ansible_facts.os_family == "Windows"
 
 - name: Include macOS Agent version tasks
-  include_tasks: parse-version-macos.yml
+  ansible.builtin.include_tasks: parse-version-macos.yml
   when: ansible_facts.os_family == "Darwin"
 
 - name: Set skip install flag if version already installed (Linux)

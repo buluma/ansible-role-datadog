@@ -200,9 +200,9 @@
       with_items: [5, 6, 7, custom]
 
 - name: Include redhat agent pinned version install task
-  include_tasks: pkg-redhat/install-pinned.yml
+  ansible.builtin.include_tasks: pkg-redhat/install-pinned.yml
   when: agent_datadog_agent_redhat_version is defined
 
 - name: Include redhat agent latest version install task
-  include_tasks: pkg-redhat/install-latest.yml
+  ansible.builtin.include_tasks: pkg-redhat/install-latest.yml
   when: agent_datadog_agent_redhat_version is not defined

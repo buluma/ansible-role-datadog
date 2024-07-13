@@ -25,7 +25,7 @@
   notify: restart datadog-agent
 
 - name: Include configuration setup tasks
-  include_tasks: _agent-linux-macos-shared.yml
+  ansible.builtin.include_tasks: _agent-linux-macos-shared.yml
   vars:
     agent_dd_config_dir: /etc/datadog-agent
     agent_dd_user: "{{ datadog_user }}"

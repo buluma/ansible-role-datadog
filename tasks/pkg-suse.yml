@@ -139,9 +139,9 @@
   changed_when: true
 
 - name: Include Suse agent pinned version install task
-  include_tasks: pkg-suse/install-pinned.yml
+  ansible.builtin.include_tasks: pkg-suse/install-pinned.yml
   when: agent_datadog_agent_suse_version is defined
 
 - name: Include Suse agent latest version install task
-  include_tasks: pkg-suse/install-latest.yml
+  ansible.builtin.include_tasks: pkg-suse/install-latest.yml
   when: agent_datadog_agent_suse_version is not defined
