@@ -1,6 +1,6 @@
 ---
 - name: Create main Datadog agent configuration file
-  win_template:
+  ansible.windows.win_template:
     # FIXME: should have permissions set to only be readable by ddagentuser
     src: datadog.yaml.j2
     dest: "{{ agent_datadog_windows_config_root }}\\datadog.yaml"
@@ -8,7 +8,7 @@
   notify: restart datadog-agent-win
 
 - name: Register all checks directories present in datadog
-  win_find:
+  ansible.windows.win_find:
     paths: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d"
     patterns:
       - "*.d"
@@ -51,7 +51,7 @@
   when: datadog_manage_config
 
 - name: Create a configuration file for each Datadog check
-  win_template:
+  ansible.windows.win_template:
     src: checks.yaml.j2
     dest: "{{ agent_datadog_windows_config_root }}\\conf.d\\{{ item }}.d\\conf.yaml"
   with_items: "{{ agent_datadog_checks | list }}"
@@ -83,7 +83,7 @@
     - datadog-process-agent
 
 - name: Create system-probe configuration file
-  win_template:
+  ansible.windows.win_template:
     src: system-probe.yaml.j2
     dest: "{{ agent_datadog_windows_config_root }}\\system-probe.yaml"
   when: datadog_manage_config

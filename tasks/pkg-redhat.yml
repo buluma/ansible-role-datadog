@@ -175,7 +175,7 @@
       when: (datadog_yum_repo | length > 0) and (not ansible_check_mode)
 
     - name: Clean repo metadata if repo changed # noqa false-handler args[module] (args.warn is deprecated since Ansible 2.11)
-      command: yum clean metadata --disablerepo="*" --enablerepo=datadog
+      ansible.builtin.command: yum clean metadata --disablerepo="*" --enablerepo=datadog
       failed_when: false # Cleaning the metadata is only needed when downgrading a major version of the Agent, don't fail because of this
       args:
         warn: false
@@ -186,7 +186,7 @@
     # This rule assures that they are correctly imported into the local db and users won't have to manually accept
     # them if running dnf commands on the hosts.
     - name: Refresh Datadog repository cache # noqa false-handler args[module] (args.warn is deprecated since Ansible 2.11)
-      command: yum -y makecache --disablerepo="*" --enablerepo=datadog
+      ansible.builtin.command: yum -y makecache --disablerepo="*" --enablerepo=datadog
       failed_when: false
       args:
         warn: false

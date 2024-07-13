@@ -2,7 +2,7 @@
 # Check current state of the integration
 
 - name: Check integration state, integration={{ item.key }}
-  ansible.builtin.command:
+  ansible.builtin.ansible.builtin.command:
     argv:
       - "{{ datadog_agent_binary_path }}"
       - integration
@@ -16,7 +16,7 @@
 # Remove integration
 
 - name: Removing integration, integration={{ item.key }}
-  ansible.builtin.command:
+  ansible.builtin.ansible.builtin.command:
     argv:
       - "{{ datadog_agent_binary_path }}"
       - integration
@@ -32,7 +32,7 @@
 # Install integration
 
 - name: Installing pinned version of integration, integration={{ item.key }}
-  command: "{{ datadog_agent_binary_path }} integration install {{ third_party }} {{ item.key }}=={{ item.value.version }}"
+  ansible.builtin.command: "{{ datadog_agent_binary_path }} integration install {{ third_party }} {{ item.key }}=={{ item.value.version }}"
   become: true
   become_user: "{{ integration_command_user }}"
   vars:

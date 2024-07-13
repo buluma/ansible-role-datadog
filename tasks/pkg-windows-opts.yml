@@ -17,7 +17,7 @@
   when: datadog_windows_ddagentuser_name | default('', true) | length > 0
 
 - name: Get Windows Agent features
-  win_shell: |
+  win_ansible.builtin.shell: |
     $installer = new-object -comobject WindowsInstaller.Installer
     $uninstall_key = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
     $agent_item = (Get-ItemProperty $uninstall_key -EA 0 | Where { $_.DisplayName -like "Datadog Agent*" }).PSChildName

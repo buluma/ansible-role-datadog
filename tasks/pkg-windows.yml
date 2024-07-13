@@ -20,7 +20,7 @@
   when: not agent_datadog_skip_install and datadog_apply_windows_614_fix
 
 - name: Run 6.14.0/1 PowerShell fix
-  win_shell: |
+  win_ansible.builtin.shell: |
     Set-ExecutionPolicy Bypass -Scope Process -Force
     &$env:temp\fix_6_14.ps1
   when: not agent_datadog_skip_install and datadog_apply_windows_614_fix
