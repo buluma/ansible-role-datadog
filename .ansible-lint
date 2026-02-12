@@ -8,12 +8,9 @@ exclude_paths:
   - molecule/default/converge.yml
   - molecule/default/verify.yml
   - molecule/default/collections.yml
-  - .tox
   - .cache
   - .github
   - requirements.yml
 
-skip_list:
+enable_list:
   - name[prefix]
-  - yaml[comments]
-  - no-free-form
