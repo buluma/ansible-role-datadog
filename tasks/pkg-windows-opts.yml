@@ -17,20 +17,12 @@
   when: datadog_windows_ddagentuser_name | default('', true) | length > 0
 
 - name: Get Windows Agent features
-  win_ansible.builtin.shell: |
-    $installer = new-object -comobject WindowsInstaller.Installer
-    $uninstall_key = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
-    $agent_item = (Get-ItemProperty $uninstall_key -EA 0 | Where { $_.DisplayName -like "Datadog Agent*" }).PSChildName
-    if (!$agent_item) {
-      return
-    }
-    $features = $installer.features($agent_item)
-    ForEach ($f in $features) {
-      if (($f -ieq 'MainApplication') -or ($installer.FeatureState($agent_item, $f) -ne 3)) {
-        continue
-      }
-      Write-Host $f
-    }
+  win_ansible.builtin.shell:
+    "": ""
+    cmd: "$installer new-object -comobject WindowsInstaller.Installer\n$uninstall_key \"HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\"\n$agent_item
+      (Get-ItemProperty $uninstall_key -EA 0 | Where { $_.DisplayName -like \"Datadog Agent*\" }).PSChildName\nif (!$agent_item) {\n  return\n}\n$features $installer.features($agent_item)\n\
+      ForEach ($f in $features) {\n  if (($f -ieq 'MainApplication') -or ($installer.FeatureState($agent_item, $f) -ne 3)) {\n    continue\n  }\n  Write-Host $f\n\
+      }"
   register: agent_windows_active_features
 
 # NOTE: We don't set DD Password Arg here to prevent it from being printed;
@@ -59,14 +51,14 @@
 - name: Validate config path
   ansible.builtin.fail:
     msg: "Incompatible configuration option {{ agent_config_root_from_registry.value }} != {{ datadog_windows_config_files_dir }}"
-  when: ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value
-    | regex_replace('\\\\$','') | lower != datadog_windows_config_files_dir | lower ) )
+  when: ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value |
+    regex_replace('\\\\$','') | lower != datadog_windows_config_files_dir | lower ) )
 
 - name: Validated config path
   ansible.builtin.debug:
     msg: "Allowing configuration option {{ agent_config_root_from_registry.value }} == {{ datadog_windows_config_files_dir }}"
-  when: ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value
-    | regex_replace('\\\\$','') | lower == datadog_windows_config_files_dir | lower ) )
+  when: ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value |
+    regex_replace('\\\\$','') | lower == datadog_windows_config_files_dir | lower ) )
 
 ## validate the binary install path.  Only necessary if it's set in the registry alread (i.e. upgrade)
 ## Will fail the install if the caller has set the binary install path to a non-standard root, and that
@@ -74,14 +66,14 @@
 - name: Validate install path
   ansible.builtin.fail:
     msg: "Incompatible configuration option {{ agent_install_path_from_registry.value }} != {{ datadog_windows_program_files_dir }}"
-  when: ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value
-    | regex_replace('\\\\$','') | lower != datadog_windows_program_files_dir | lower ) )
+  when: ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value |
+    regex_replace('\\\\$','') | lower != datadog_windows_program_files_dir | lower ) )
 
 - name: Validated install path
   ansible.builtin.debug:
     msg: "Allowing configuration option {{ agent_install_path_from_registry.value }} == {{ datadog_windows_program_files_dir }}"
-  when: ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value
-    | regex_replace('\\\\$','') | lower == datadog_windows_program_files_dir | lower ) )
+  when: ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value |
+    regex_replace('\\\\$','') | lower == datadog_windows_program_files_dir | lower ) )
 
 - name: Set Program Files Target Directory
   ansible.builtin.set_fact:

@@ -12,7 +12,7 @@
     dest: /etc/dd-agent/datadog.conf
     owner: "{{ datadog_user }}"
     group: "{{ datadog_group }}"
-    mode: "0644"  # FIXME: should have permissions set to only be readable by owner
+    mode: "0644" # FIXME: should have permissions set to only be readable by owner
   when: datadog_manage_config
   notify: restart datadog-agent
 
@@ -60,8 +60,8 @@
   ansible.builtin.file:
     path: "/etc/dd-agent/conf.d/{{ item }}.yaml.default"
     state: absent
-  loop: "{{ agent_datadog_conf_files_default.files | map(attribute='path') | list | map('basename') | list |
-    map('regex_replace', '^(.*).yaml.default$', '\\1') | list }}"
+  loop: "{{ agent_datadog_conf_files_default.files | map(attribute='path') | list | map('basename') | list | map('regex_replace', '^(.*).yaml.default$', '\\1') |
+    list }}"
   when: datadog_manage_config and datadog_disable_default_checks and item not in agent_datadog_tracked_checks
   notify: restart datadog-agent
 
@@ -71,7 +71,7 @@
     dest: /etc/dd-agent/conf.d/{{ item }}.yaml
     owner: "{{ datadog_user }}"
     group: "{{ datadog_group }}"
-    mode: "0644"  # FIXME: should have permissions set to only be readable by owner
+    mode: "0644" # FIXME: should have permissions set to only be readable by owner
   with_items: "{{ agent_datadog_checks | list }}"
   when: datadog_manage_config
   notify: restart datadog-agent

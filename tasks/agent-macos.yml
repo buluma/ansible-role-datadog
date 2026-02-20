@@ -3,9 +3,8 @@
 # under datadog_macos_user and remove the user-specific config for ansible_user
 - name: Load user data
   ansible.builtin.shell:
-    cmd: "set -o pipefail && dscacheutil -q user -a name {{ datadog_macos_user }} |
-      awk 'BEGIN { RS=\"\\n\"; ORS=\" \" } /uid:/ { print \"{ \\\"uid\\\": \" $2\",\" } /gid:/ { print
-      \"\\\"gid\\\": \" $2 \" }\"}'"
+    cmd: "set -o pipefail && dscacheutil -q user -a name {{ datadog_macos_user }} | awk 'BEGIN { RS=\"\\n\"; ORS=\" \" } /uid:/ { print \"{ \\\"uid\\\": \" $2\",\"\
+      \ } /gid:/ { print \"\\\"gid\\\": \" $2 \" }\"}'"
     executable: /bin/bash
   changed_when: false
   register: agent_macos_user_output
