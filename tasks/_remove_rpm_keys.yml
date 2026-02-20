@@ -1,5 +1,5 @@
 ---
-- name: Ensure GPG key is not present in the RPM db, key={{ item }}
+- name: _remove_rpm_keys | Ensure GPG key is not present in the RPM db, key={{ item }}
   ansible.builtin.rpm_key:
     state: absent
     key: "{{ item }}"

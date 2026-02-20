@@ -1,7 +1,7 @@
 ---
 # NOTE: the DMG gets installed as ansible_user, but we then configure it to run
 # under datadog_macos_user and remove the user-specific config for ansible_user
-- name: Load user data
+- name: agent-macos | Load user data
   ansible.builtin.shell:
     cmd: "set -o pipefail && dscacheutil -q user -a name {{ datadog_macos_user }} | awk 'BEGIN { RS=\"\\n\"; ORS=\" \" } /uid:/ { print \"{ \\\"uid\\\": \" $2\",\"\
       \ } /gid:/ { print \"\\\"gid\\\": \" $2 \" }\"}'"
@@ -14,11 +14,11 @@
 # object as a string but nested in `.stdout`. Ansible has built in behavior that if it receives JSON data as
 # a string it will automatically convert it to the corresponding object. This enables us to get multiple values
 # out of the ABOVE task preventing us from having to run 2 similar commands.
-- name: Extract JSON user data as variable object
+- name: agent-macos | Extract JSON user data as variable object
   ansible.builtin.set_fact:
     agent_macos_user_data: "{{ agent_macos_user_output.stdout }}"
 
-- name: Load user group data
+- name: agent-macos | Load user group data
   ansible.builtin.shell:
     cmd: "set -o pipefail && dscacheutil -q group -a gid {{ agent_macos_user_data.gid }} | grep '^name: ' | awk '{ print $2 }'"
     executable: /bin/bash
@@ -28,26 +28,26 @@
 # If the ansible_user was logged in via GUI during installation, the postinstall package script
 # created launchctl service for the user and also a login item
 
-- name: Find out if user LaunchAgent is running
+- name: agent-macos | Find out if user LaunchAgent is running
   ansible.builtin.shell:
     cmd: "launchctl print gui/$(id -u)/{{ datadog_macos_service_name }}"
   register: agent_user_service_created
   changed_when: false
   failed_when: false
 
-- name: Unload and stop user LaunchAgent
+- name: agent-macos | Unload and stop user LaunchAgent
   ansible.builtin.shell:
     cmd: "launchctl bootout gui/$(id -u)/{{ datadog_macos_service_name }}"
   when: agent_user_service_created.rc == 0
   changed_when: false
 
-- name: Remove user login item
+- name: agent-macos | Remove user login item
   ansible.builtin.command: |-
     osascript -e 'tell application "System Events" to if login item "Datadog Agent" exists then delete login item "Datadog Agent"'
   when: agent_user_service_created.rc == 0
   changed_when: false
 
-- name: Remove user LaunchAgent plist file
+- name: agent-macos | Remove user LaunchAgent plist file
   ansible.builtin.file:
     path: /Users/{{ ansible_user }}/{{ datadog_macos_user_plist_file_path }}
     state: absent
@@ -59,7 +59,7 @@
 # The disadvantage of using a template obviously is that if we changed the plist
 # file in the .dmg, we would also have to update this. Fortunately this seems
 # to basically never happen, so I think it's an acceptable downside.
-- name: Add system LaunchDaemon plist file
+- name: agent-macos | Add system LaunchDaemon plist file
   ansible.builtin.template:
     src: com.datadoghq.agent.plist.j2
     dest: "{{ datadog_macos_system_plist_file_path }}"
@@ -74,7 +74,7 @@
     agent_username: "{{ datadog_macos_user }}"
     agent_groupname: "{{ agent_macos_user_group.stdout }}"
 
-- name: Include configuration setup tasks
+- name: agent-macos | Include configuration setup tasks
   ansible.builtin.import_tasks: _agent-linux-macos-shared.yml
   vars:
     agent_dd_config_dir: "{{ datadog_macos_etc_dir }}"
@@ -83,7 +83,7 @@
     agent_dd_notify_agent: "restart datadog-agent-macos"
   become: true
 
-- name: Set permissions for DataDog Directories
+- name: agent-macos | Set permissions for DataDog Directories
   ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ agent_macos_user_data.uid }}"

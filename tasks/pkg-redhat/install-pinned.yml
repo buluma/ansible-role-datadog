@@ -1,5 +1,5 @@
 ---
-- name: Install pinned datadog-agent package (dnf)
+- name: pkg-redhat | install-pinned | Install pinned datadog-agent package (dnf)
   ansible.builtin.dnf:
     name: "{{ datadog_agent_flavor }}-{{ agent_datadog_agent_redhat_version }}"
     update_cache: true
@@ -9,7 +9,7 @@
   when: not ansible_check_mode and ansible_pkg_mgr == "dnf"
   notify: restart datadog-agent
 
-- name: Install pinned datadog-agent package (yum)
+- name: pkg-redhat | install-pinned | Install pinned datadog-agent package (yum)
   ansible.builtin.dnf:
     # We have to add architecture, because yum only understands epoch when architecture is also specified
     name: "{{ datadog_agent_flavor }}-{{ agent_datadog_agent_redhat_version }}.{{ ansible_facts.architecture }}"

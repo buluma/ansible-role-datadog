@@ -1,5 +1,5 @@
 ---
-- name: Get macOS Agent version
+- name: parse-version-macos | Get macOS Agent version
   ansible.builtin.shell:
     cmd: set -o pipefail && {{ datadog_agent_binary_path_macos }} version | grep 'Agent ' | awk '{print $2}'
     executable: /bin/bash

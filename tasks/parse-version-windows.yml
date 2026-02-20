@@ -1,6 +1,6 @@
 ---
 # NOTE: This won't work with rc / beta builds.
-- name: Get Windows Agent version
+- name: parse-version-windows | Get Windows Agent version
   win_ansible.builtin.shell:
     "": ""
     ? "Agent\"\n$version"

@@ -1,30 +1,30 @@
 ---
-- name: Fail if the Datadog Agent version is not compatible with APM host injection
+- name: apm-inject-check | Fail if the Datadog Agent version is not compatible with APM host injection
   ansible.builtin.fail:
     msg: APM Host Injection is not supported for this datadog-agent version.
   when: agent_datadog_agent_major_version | int < 7
 
-- name: Fail if APM Host injection is not supported on this host
+- name: apm-inject-check | Fail if APM Host injection is not supported on this host
   ansible.builtin.fail:
     msg: APM Host Injection is not supported in this platform.
   when: ansible_facts.os_family not in ["Debian", "RedHat", "Rocky", "AlmaLinux"]
 
-- name: Fail if APM Host injection type does not contain a supported value
+- name: apm-inject-check | Fail if APM Host injection type does not contain a supported value
   ansible.builtin.fail:
     msg: The provided value for datadog_apm_instrumentation_enabled is not valid. Valid values are "all", "host" and "docker"
   when: datadog_apm_instrumentation_enabled not in ["all", "host", "docker"]
 
-- name: Default to list of packages rather than "all"
+- name: apm-inject-check | Default to list of packages rather than "all"
   ansible.builtin.set_fact:
     datadog_apm_instrumentation_languages: ["java", "js", "dotnet", "python", "ruby"]
   when: datadog_apm_instrumentation_languages == ["all"]
 
-- name: Check if docker daemon config dir exists
+- name: apm-inject-check | Check if docker daemon config dir exists
   ansible.builtin.stat:
     path: /etc/docker
   register: agent_docker_daemon_config_dir
 
-- name: Fail if APM Host container injection requirements aren't met (Docker installed)
+- name: apm-inject-check | Fail if APM Host container injection requirements aren't met (Docker installed)
   ansible.builtin.fail:
     msg: >
       /etc/docker does not exist. Please ensure docker is installed or disable the
@@ -36,12 +36,12 @@
       or not agent_docker_daemon_config_dir.stat.isdir
     )
 
-- name: Fail if datadog_manage_config is not enabled
+- name: apm-inject-check | Fail if datadog_manage_config is not enabled
   ansible.builtin.fail:
     msg: "APM Host Injection requires datadog_manage_config: true"
   when: not datadog_manage_config
 
-- name: Set internal values for APM host injection datadog_config
+- name: apm-inject-check | Set internal values for APM host injection datadog_config
   ansible.builtin.set_fact:
     agent_dd_apm_host_inject_config:
       apm_config:
@@ -49,7 +49,7 @@
       use_dogstatsd: true
       dogstatsd_socket: /opt/datadog/apm/inject/run/dsd.socket
 
-- name: Fail if provided config is not compatible with APM host injection
+- name: apm-inject-check | Fail if provided config is not compatible with APM host injection
   ansible.builtin.fail:
     msg: |
       The provided config is not compatible with APM host injection. The expected config parameters to be included are:
@@ -73,6 +73,6 @@
         and agent_datadog_config['apm_config']['receiver_socket'] != agent_dd_apm_host_inject_config['apm_config']['receiver_socket']
         }}
 
-- name: Update datadog_config including config values needed for APM host injection
+- name: apm-inject-check | Update datadog_config including config values needed for APM host injection
   ansible.builtin.set_fact:
     agent_datadog_config: "{{ agent_datadog_config | combine(agent_dd_apm_host_inject_config, list_merge='keep') }}"

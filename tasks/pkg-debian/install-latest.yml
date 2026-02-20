@@ -1,5 +1,5 @@
 ---
-- name: Install latest datadog-agent package
+- name: pkg-debian | install-latest | Install latest datadog-agent package
   ansible.builtin.apt:
     name: "{{ datadog_agent_flavor }}"
     state: latest # noqa package-latest
