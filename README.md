@@ -23,7 +23,7 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
     datadog_config:
       tags: "mytag0, mytag1"
       log_level: INFO
-      apm_enabled: "true"  # has to be set as a string
+      apm_enabled: "true" # has to be set as a string
     datadog_config_ex:
       trace.config:
         env: dev
@@ -40,7 +40,9 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
         init_config:
         instances:
           - name: agent
-            search_string: ['agent', 'sshd' ]
+            search_string:
+              - agent
+              - sshd
 
   tasks:
     - name: "Include buluma.datadog"
