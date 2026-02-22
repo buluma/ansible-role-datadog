@@ -42,12 +42,14 @@ jobs:
         distro:
           - image: "enterpriselinux"
             tag: "latest"
+          - image: "enterpriselinux"
+            tag: "8"
           - image: "docker-molecule-images"
             tag: "amazonlinux2023"
           - image: "docker-molecule-images"
-            tag: "amazonlinux1"
+            tag: "amazonlinux_latest"
           - image: "docker-molecule-images"
-            tag: "opensuse"
+            tag: "opensuse-tumbleweed"
     steps:
       - name: checkout
         uses: actions/checkout@v6
