@@ -12,56 +12,56 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
 
 ```yaml
 ---
-  - name: Converge
-    hosts: all
-    vars:
-      datadog_api_key: "11111111111111111111111111111111"
-      datadog_enabled: false
-      datadog_agent_major_version: 7
+- name: Converge
+  hosts: all
+  vars:
+    datadog_api_key: "11111111111111111111111111111111"
+    datadog_enabled: false
+    datadog_agent_major_version: 7
     # avoid checking that the agent is stopped for centos
-      datadog_skip_running_check: true
-      datadog_config:
-        tags: "mytag0, mytag1"
-        log_level: INFO
-        apm_enabled: "true" # has to be set as a string
-      datadog_config_ex:
-        trace.config:
-          env: dev
-        trace.concentrator:
-          extra_aggregators: version
-      system_probe_config:
-        sysprobe_socket: /opt/datadog-agent/run/sysprobe.sock
-      network_config:
-        enabled: true
-      runtime_security_config:
-        enabled: true
-      datadog_checks:
-        process:
-          init_config:
-          instances:
-            - name: agent
-              search_string:
-                - agent
-                - sshd
+    datadog_skip_running_check: true
+    datadog_config:
+      tags: "mytag0, mytag1"
+      log_level: INFO
+      apm_enabled: "true"   # has to be set as a string
+    datadog_config_ex:
+      trace.config:
+        env: dev
+      trace.concentrator:
+        extra_aggregators: version
+    system_probe_config:
+      sysprobe_socket: /opt/datadog-agent/run/sysprobe.sock
+    network_config:
+      enabled: true
+    runtime_security_config:
+      enabled: true
+    datadog_checks:
+      process:
+        init_config:
+        instances:
+        - name: agent
+          search_string:
+          - agent
+          - sshd
 
-    tasks:
-      - name: "Include buluma.datadog"
-        ansible.builtin.include_role:
-          name: "buluma.datadog"
+  tasks:
+  - name: "Include buluma.datadog"
+    ansible.builtin.include_role:
+      name: "buluma.datadog"
 ```
 
 The machine needs to be prepared. In CI this is done using [`molecule/default/prepare.yml`](https://github.com/buluma/ansible-role-datadog/blob/master/molecule/default/prepare.yml):
 
 ```yaml
 ---
-  - name: Prepare
-    hosts: all
-    gather_facts: false
-    become: true
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  become: true
 
-    roles:
-      - role: buluma.bootstrap
-      - role: buluma.ca_certificates
+  roles:
+  - role: buluma.bootstrap
+  - role: buluma.ca_certificates
 ```
 
 Also see a [full explanation and example](https://buluma.github.io/how-to-use-these-roles.html) on how to use these roles.
@@ -262,7 +262,7 @@ datadog_apm_instrumentation_docker_config:
   library_inject: true
   log_level: info
   output_paths:
-    - stderr
+  - stderr
   config_sources: BASIC
 
 #
@@ -276,18 +276,18 @@ datadog_apt_key_current_name: "DATADOG_APT_KEY_CURRENT"
 # NOTE: we don't use URLs starting with https://keys.datadoghq.com/, as Python
 # on older Debian/Ubuntu doesn't support SNI and get_url would fail on them
 datadog_apt_default_keys:
-  - key: "{{ datadog_apt_key_current_name }}"
-    value: 
-      https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_CURRENT.public
-  - key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE
-    value: 
-      https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_382E94DE.public
-  - key: D75CEA17048B9ACBF186794B32637D44F14F620E
-    value: 
-      https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_F14F620E.public
-  - key: 5F1E256061D813B125E156E8E6266D4AC0962C7D
-    value: 
-      https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_C0962C7D.public
+- key: "{{ datadog_apt_key_current_name }}"
+  value: 
+    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_CURRENT.public
+- key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE
+  value: 
+    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_382E94DE.public
+- key: D75CEA17048B9ACBF186794B32637D44F14F620E
+  value: 
+    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_F14F620E.public
+- key: 5F1E256061D813B125E156E8E6266D4AC0962C7D
+  value: 
+    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_C0962C7D.public
 
 # The default apt repository for each major Agent version is specified in the following variables.
 datadog_agent5_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/
