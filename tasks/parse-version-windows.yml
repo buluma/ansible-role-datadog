@@ -5,7 +5,7 @@
     "": ""
     ? "Agent\"\n$version"
     : Get-ItemProperty
-    cmd: "$product_name \"Datadog HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* |\nSelect-Object DisplayName,DisplayVersion,PSChildName -unique
+    cmd: "$product_name \"Datadog HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\ Uninstall\\* |\nSelect-Object DisplayName,DisplayVersion,PSChildName -unique
       |\nWhere-Object {$_.DisplayName -clike $product_name} |\nSelect-Object DisplayVersion -ExpandProperty DisplayVersion\n\nif (!$version) {\n  Write-Host \"\"\n\
       } else {\n  $ddmaj, $ddmin, $ddpatch, $ddbuild $version.split(\".\")\n  Write-Host \"$($ddmaj).$($ddmin).$($ddpatch)\"\n}"
   register: agent_datadog_version_check_win

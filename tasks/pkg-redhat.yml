@@ -21,7 +21,8 @@
         agent_do_yum_repo_gpgcheck: >-
           {{ datadog_yum_repo_gpgcheck if datadog_yum_repo_gpgcheck != '' else (
             'false' if (
-              ansible_facts.distribution_version.startswith('8.1.') or ansible_facts.distribution_version == '8.1' or
+              ansible_facts.distribution_version.startswith('8.1.') or ansible_facts.distribution_version
+          == '8.1' or
               datadog_yum_repo != ''
             ) else 'true'
           ) }}

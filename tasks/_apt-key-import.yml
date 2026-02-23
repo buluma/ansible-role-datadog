@@ -9,7 +9,8 @@
     cmd: >
       set -o pipefail &&
       gpg --false-default-keyring --keyring {{ datadog_apt_usr_share_keyring }}
-      --list-keys --with-fingerprint --with-colons | grep {{ agent_key_fingerprint }}
+      --list-keys --with-fingerprint --with-colons | grep {{ agent_key_fingerprint
+      }}
     executable: /bin/bash
   register: agent_key_exists_result
   failed_when: false # we expect the command to fail when the key is not found; we never want this task to fail

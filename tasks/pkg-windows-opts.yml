@@ -114,5 +114,6 @@
   # want to force the install for nothing in those version, we skip the step
   # when the agent is 7.45+
   when: >-
-    (agent_datadog_skip_install and (agent_datadog_major | int <= 7) and (agent_datadog_minor | int < 45)) and
+    (agent_datadog_skip_install and (agent_datadog_major | int <= 7) and (agent_datadog_minor
+    | int < 45)) and
     (("NPM" in agent_windows_active_features.stdout_lines) != agent_datadog_sysprobe_enabled)
