@@ -110,8 +110,7 @@ integration_command_user_linux: "dd-agent"
 integration_command_user_windows: "administrator"
 integration_command_user_macos: "dd-agent"
 datadog_agent_binary_path_linux: /opt/datadog-agent/bin/agent/agent
-datadog_agent_binary_path_windows: "C:\\Program Files\\Datadog\\Datadog Agent\\bin\\\
-  agent.exe"
+datadog_agent_binary_path_windows: "C:\\Program Files\\Datadog\\Datadog Agent\\bin\\agent.exe"
 datadog_agent_binary_path_macos: "/opt/datadog-agent/bin/agent/agent"
 
 # list of additional groups for datadog_user
@@ -262,7 +261,7 @@ datadog_apm_instrumentation_docker_config:
   library_inject: true
   log_level: info
   output_paths:
-  - stderr
+    - stderr
   config_sources: BASIC
 
 #
@@ -276,42 +275,29 @@ datadog_apt_key_current_name: "DATADOG_APT_KEY_CURRENT"
 # NOTE: we don't use URLs starting with https://keys.datadoghq.com/, as Python
 # on older Debian/Ubuntu doesn't support SNI and get_url would fail on them
 datadog_apt_default_keys:
-- key: "{{ datadog_apt_key_current_name }}"
-  value: 
-    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_CURRENT.public
-- key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE
-  value: 
-    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_382E94DE.public
-- key: D75CEA17048B9ACBF186794B32637D44F14F620E
-  value: 
-    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_F14F620E.public
-- key: 5F1E256061D813B125E156E8E6266D4AC0962C7D
-  value: 
-    https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_C0962C7D.public
+  - key: "{{ datadog_apt_key_current_name }}"
+    value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_CURRENT.public
+  - key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE
+    value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_382E94DE.public
+  - key: D75CEA17048B9ACBF186794B32637D44F14F620E
+    value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_F14F620E.public
+  - key: 5F1E256061D813B125E156E8E6266D4AC0962C7D
+    value: https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_C0962C7D.public
 
 # The default apt repository for each major Agent version is specified in the following variables.
-datadog_agent5_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/
-  stable main"
-datadog_agent6_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/
-  stable 6"
-datadog_agent7_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/
-  stable 7"
+datadog_agent5_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ stable main"
+datadog_agent6_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ stable 6"
+datadog_agent7_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ stable 7"
 
 # The default yum repository for each major Agent version is specified in the following variables.
-datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_facts.architecture
-  }}"
-datadog_agent6_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_facts.architecture
-  }}"
-datadog_agent7_yum_repo: "https://yum.datadoghq.com/stable/7/{{ ansible_facts.architecture
-  }}"
+datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_facts.architecture }}"
+datadog_agent6_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_facts.architecture }}"
+datadog_agent7_yum_repo: "https://yum.datadoghq.com/stable/7/{{ ansible_facts.architecture }}"
 
 # The default zypper repository for each major Agent version is specified in the following variables.
-datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_facts.architecture
-  }}"
-datadog_agent6_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_facts.architecture
-  }}"
-datadog_agent7_zypper_repo: "https://yum.datadoghq.com/suse/stable/7/{{ ansible_facts.architecture
-  }}"
+datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_facts.architecture }}"
+datadog_agent6_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_facts.architecture }}"
+datadog_agent7_zypper_repo: "https://yum.datadoghq.com/suse/stable/7/{{ ansible_facts.architecture }}"
 
 # Default macOS latest dmg package URL
 
@@ -330,10 +316,8 @@ datadog_macos_versioned_url: "https://s3.amazonaws.com/dd-agent/datadog-agent"
 
 datadog_macos_user: "{{ ansible_user }}"
 datadog_macos_service_name: "com.datadoghq.agent"
-datadog_macos_user_plist_file_path: "Library/LaunchAgents/{{ datadog_macos_service_name
-  }}.plist"
-datadog_macos_system_plist_file_path: "/Library/LaunchDaemons/{{ datadog_macos_service_name
-  }}.plist"
+datadog_macos_user_plist_file_path: "Library/LaunchAgents/{{ datadog_macos_service_name }}.plist"
+datadog_macos_system_plist_file_path: "/Library/LaunchDaemons/{{ datadog_macos_service_name }}.plist"
 datadog_macos_etc_dir: "/opt/datadog-agent/etc"
 datadog_macos_logs_dir: "/opt/datadog-agent/logs"
 datadog_macos_run_dir: "/opt/datadog-agent/run"
