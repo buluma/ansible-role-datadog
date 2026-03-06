@@ -6,6 +6,9 @@
 
 **Merged pull requests:**
 
+- Bump actions/checkout from 4 to 6 [\#22](https://github.com/buluma/ansible-role-datadog/pull/22) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/checkout from 4 to 6 [\#21](https://github.com/buluma/ansible-role-datadog/pull/21) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/setup-python from 5 to 6 [\#20](https://github.com/buluma/ansible-role-datadog/pull/20) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump buluma/dependabot-auto-merge-action from 2.1.1 to 2.1.2 [\#14](https://github.com/buluma/ansible-role-datadog/pull/14) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump release-drafter/release-drafter from 5 to 6 [\#13](https://github.com/buluma/ansible-role-datadog/pull/13) ([dependabot[bot]](https://github.com/apps/dependabot))
 
