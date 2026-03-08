@@ -19,7 +19,8 @@
 - name: pkg-windows-opts | Get Windows Agent features
   win_ansible.builtin.shell:
     "": ""
-    cmd: "$installer new-object -comobject WindowsInstaller.Installer\n$uninstall_key \"HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\"\n$agent_item
+    cmd:
+      "$installer new-object -comobject WindowsInstaller.Installer\n$uninstall_key \"HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\"\n$agent_item
       (Get-ItemProperty $uninstall_key -EA 0 | Where { $_.DisplayName -like \"Datadog Agent*\" }).PSChildName\nif (!$agent_item) {\n  return\n}\n$features $installer.features($agent_item)\n\
       ForEach ($f in $features) {\n  if (($f -ieq 'MainApplication') -or ($installer.FeatureState($agent_item, $f) -ne 3)) {\n    continue\n  }\n  Write-Host $f\n\
       }"
@@ -51,13 +52,15 @@
 - name: pkg-windows-opts | Validate config path
   ansible.builtin.fail:
     msg: "Incompatible configuration option {{ agent_config_root_from_registry.value }} != {{ datadog_windows_config_files_dir }}"
-  when: ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value |
+  when:
+    ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value |
     regex_replace('\\\\$','') | lower != datadog_windows_config_files_dir | lower ) )
 
 - name: pkg-windows-opts | Validated config path
   ansible.builtin.debug:
     msg: "Allowing configuration option {{ agent_config_root_from_registry.value }} == {{ datadog_windows_config_files_dir }}"
-  when: ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value |
+  when:
+    ( (agent_config_root_from_registry.exists) and (datadog_windows_config_files_dir | length > 0 ) and (agent_config_root_from_registry.value |
     regex_replace('\\\\$','') | lower == datadog_windows_config_files_dir | lower ) )
 
 ## validate the binary install path.  Only necessary if it's set in the registry alread (i.e. upgrade)
@@ -66,13 +69,15 @@
 - name: pkg-windows-opts | Validate install path
   ansible.builtin.fail:
     msg: "Incompatible configuration option {{ agent_install_path_from_registry.value }} != {{ datadog_windows_program_files_dir }}"
-  when: ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value |
+  when:
+    ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value |
     regex_replace('\\\\$','') | lower != datadog_windows_program_files_dir | lower ) )
 
 - name: pkg-windows-opts | Validated install path
   ansible.builtin.debug:
     msg: "Allowing configuration option {{ agent_install_path_from_registry.value }} == {{ datadog_windows_program_files_dir }}"
-  when: ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value |
+  when:
+    ( (agent_install_path_from_registry.exists) and (datadog_windows_program_files_dir | length > 0 ) and (agent_install_path_from_registry.value |
     regex_replace('\\\\$','') | lower == datadog_windows_program_files_dir | lower ) )
 
 - name: pkg-windows-opts | Set Program Files Target Directory

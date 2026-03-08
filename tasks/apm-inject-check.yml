@@ -16,7 +16,8 @@
 
 - name: apm-inject-check | Default to list of packages rather than "all"
   ansible.builtin.set_fact:
-    datadog_apm_instrumentation_languages: ["java", "js", "dotnet", "python", "ruby"]
+    datadog_apm_instrumentation_languages:
+      ["java", "js", "dotnet", "python", "ruby"]
   when: datadog_apm_instrumentation_languages == ["all"]
 
 - name: apm-inject-check | Check if docker daemon config dir exists
