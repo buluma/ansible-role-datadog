@@ -13,9 +13,6 @@ galaxy_info:
     - name: Amazon
       versions:
         - all
-    - name: opensuse
-      versions:
-        - all
   galaxy_tags:
     - datadog
 dependencies: []
