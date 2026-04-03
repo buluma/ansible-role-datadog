@@ -10,9 +10,6 @@ galaxy_info:
     - name: EL
       versions:
         - all
-    - name: Amazon
-      versions:
-        - all
   galaxy_tags:
     - datadog
 dependencies: []
