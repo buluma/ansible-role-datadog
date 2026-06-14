@@ -25,7 +25,7 @@
     groups: "{{ datadog_additional_groups }}"
     append: true
   when: datadog_additional_groups | default([], true) | length > 0
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
 
 - name: agent-linux | Include configuration setup tasks
   ansible.builtin.include_tasks: _agent-linux-macos-shared.yml
@@ -33,7 +33,7 @@
     agent_dd_config_dir: /etc/datadog-agent
     agent_dd_user: "{{ datadog_user }}"
     agent_dd_group: "{{ datadog_group }}"
-    agent_dd_notify_agent: restart datadog-agent
+    agent_dd_notify_agent: Restart datadog-agent
 
 - name: agent-linux | Create system-probe configuration file
   ansible.builtin.template:
@@ -43,7 +43,7 @@
     owner: root
     group: "{{ datadog_group }}"
   when: datadog_manage_config
-  notify: "{% if agent_datadog_before_7180 %}restart datadog-agent-sysprobe{% else %}restart datadog-agent{% endif %}"
+  notify: "{% if agent_datadog_before_7180 %}Restart datadog-agent-sysprobe{% else %}Restart datadog-agent{% endif %}"
 
 - name: agent-linux | Set system probe installed
   ansible.builtin.set_fact:
@@ -133,7 +133,7 @@
     owner: root
     group: "{{ datadog_group }}"
   when: datadog_manage_config and (runtime_security_config is defined and runtime_security_config | default({}, true) | length > 0)
-  notify: "{% if agent_datadog_before_7180 %}restart datadog-agent-sysprobe{% else %}restart datadog-agent{% endif %}"
+  notify: "{% if agent_datadog_before_7180 %}Restart datadog-agent-sysprobe{% else %}Restart datadog-agent{% endif %}"
 
 # Templates don't support the "state: absent" argument, so if the file was created in a previous run
 # and then runtime_security_config was completely removed, this is the only way to ensure
@@ -143,4 +143,4 @@
     path: /etc/datadog-agent/security-agent.yaml
     state: absent
   when: datadog_manage_config and (runtime_security_config is not defined or runtime_security_config | default({}, true) | length == 0)
-  notify: "{% if agent_datadog_before_7180 %}restart datadog-agent-sysprobe{% else %}restart datadog-agent{% endif %}"
+  notify: "{% if agent_datadog_before_7180 %}Restart datadog-agent-sysprobe{% else %}Restart datadog-agent{% endif %}"

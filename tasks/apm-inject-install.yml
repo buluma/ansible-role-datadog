@@ -16,7 +16,7 @@
 
 - name: apm-inject-install | Run APM host injection setup script
   ansible.builtin.command: dd-host-install --false-config-change --false-agent-restart
-  notify: restart datadog-agent
+  notify: Restart datadog-agent
   when: not ansible_check_mode and datadog_apm_instrumentation_enabled in ["all", "host"] and agent_dd_host_install_cmd.rc == 1
   changed_when: true
 
