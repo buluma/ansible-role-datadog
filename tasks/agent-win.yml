@@ -9,7 +9,7 @@
 
 - name: agent-win | Register all checks directories present in datadog
   ansible.windows.win_find:
-    paths: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d"
+    paths: "{{ ansible_facts['env']['ProgramData'] }}\\Datadog\\conf.d"
     patterns:
       - "*.d"
     file_type: directory
@@ -18,7 +18,7 @@
 
 - name: agent-win | Delete checks not present in agent_datadog_tracked_checks
   ansible.windows.win_file:
-    path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml"
+    path: "{{ ansible_facts['env']['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
   when: datadog_manage_config and datadog_disable_untracked_checks and item not in agent_datadog_tracked_checks
@@ -26,7 +26,7 @@
 
 - name: agent-win | Delete default checks
   ansible.windows.win_file:
-    path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.default"
+    path: "{{ ansible_facts['env']['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.default"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
   when: datadog_manage_config and datadog_disable_default_checks and item not in agent_datadog_tracked_checks
@@ -34,7 +34,7 @@
 
 - name: agent-win | Delete example checks
   ansible.windows.win_file:
-    path: "{{ ansible_facts.env['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.example"
+    path: "{{ ansible_facts['env']['ProgramData'] }}\\Datadog\\conf.d\\{{ item }}.d\\conf.yaml.example"
     state: absent
   loop: "{{ agent_datadog_conf_directories.files | map(attribute='path') | list | map('win_basename') | list | map('regex_replace', '^(.*).d$', '\\1') | list }}"
   when: datadog_manage_config and datadog_disable_example_checks and item not in agent_datadog_tracked_checks

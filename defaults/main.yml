@@ -170,7 +170,7 @@ datadog_windows_program_files_dir: ""
 datadog_windows_config_files_dir: ""
 
 # Default configuration root.  Do not modify
-datadog_windows_config_root: "{{ ansible_facts.env['ProgramData'] }}\\Datadog"
+datadog_windows_config_root: "{{ ansible_facts['env'].ProgramData }}\\Datadog"
 
 # do not modify.  Default empty value for constructing the list of optional
 # arguments to supply to the windows installer.
@@ -217,14 +217,14 @@ datadog_agent6_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] ht
 datadog_agent7_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ stable 7"
 
 # The default yum repository for each major Agent version is specified in the following variables.
-datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_facts.architecture }}"
-datadog_agent6_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_facts.architecture }}"
-datadog_agent7_yum_repo: "https://yum.datadoghq.com/stable/7/{{ ansible_facts.architecture }}"
+datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_facts['architecture'] }}"
+datadog_agent6_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_facts['architecture'] }}"
+datadog_agent7_yum_repo: "https://yum.datadoghq.com/stable/7/{{ ansible_facts['architecture'] }}"
 
 # The default zypper repository for each major Agent version is specified in the following variables.
-datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_facts.architecture }}"
-datadog_agent6_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_facts.architecture }}"
-datadog_agent7_zypper_repo: "https://yum.datadoghq.com/suse/stable/7/{{ ansible_facts.architecture }}"
+datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_facts['architecture'] }}"
+datadog_agent6_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_facts['architecture'] }}"
+datadog_agent7_zypper_repo: "https://yum.datadoghq.com/suse/stable/7/{{ ansible_facts['architecture'] }}"
 
 # Default macOS latest dmg package URL
 

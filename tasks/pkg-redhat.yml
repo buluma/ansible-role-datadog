@@ -11,7 +11,7 @@
   # See https://github.com/ansible/ansible/issues/78288
   when:
     (not datadog_ignore_old_centos_python3_error) and ("{}.{}".format(ansible_version.major, ansible_version.minor) is version("2.11", operator="lt",
-    strict=True)) and (ansible_facts.pkg_mgr == "yum") and (ansible_facts.python.version.major | int >= 3)
+    strict=True)) and (ansible_facts['pkg_mgr'] == "yum") and (ansible_facts['python'].version.major | int >= 3)
 
 - name: pkg-redhat | If yum repo configuration is enabled
   when: datadog_yum_repo_config_enabled | bool
@@ -23,7 +23,7 @@
         agent_do_yum_repo_gpgcheck: >-
           {{ datadog_yum_repo_gpgcheck if datadog_yum_repo_gpgcheck != '' else (
             'false' if (
-              ansible_facts.distribution_version.startswith('8.1.') or ansible_facts.distribution_version
+              ansible_facts['distribution_version'].startswith('8.1.') or ansible_facts['distribution_version']
           == '8.1' or
               datadog_yum_repo != ''
             ) else 'true'

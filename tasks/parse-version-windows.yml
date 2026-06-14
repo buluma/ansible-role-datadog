@@ -12,4 +12,4 @@
   changed_when: false
   failed_when: false
   check_mode: false
-  when: ansible_facts.os_family == "Windows"
+  when: ansible_facts['os_family'] == "Windows"

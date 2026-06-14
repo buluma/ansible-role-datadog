@@ -74,35 +74,35 @@
       Darwin: "{{ agent_datadog_agent_macos_version }}"
 
 - name: parse-version | Get Linux Agent version
-  ansible.builtin.shell: "{{ agent_datadog_version_finding_cmds[ansible_facts.os_family] }}" # noqa command-instead-of-shell - We need shell because of pipes
+  ansible.builtin.shell: "{{ agent_datadog_version_finding_cmds[ansible_facts['os_family']] }}" # noqa command-instead-of-shell - We need shell because of pipes
   register: agent_datadog_version_check_linux
   changed_when: false
   failed_when: false
   check_mode: false
-  when: ansible_facts.system is defined and ansible_facts.system == "Linux"
+  when: ansible_facts['system'] is defined and ansible_facts['system'] == "Linux"
 
 # The task is win_shell, so if users don't have the "ansible.windows" collection installed,
 # parsing the task would fail even if the host is not Windows. By hiding the task inside
 # a conditionally included file, we can prevent this.
 - name: parse-version | Include Windows Agent version tasks
   ansible.builtin.include_tasks: parse-version-windows.yml
-  when: ansible_facts.os_family == "Windows"
+  when: ansible_facts['os_family'] == "Windows"
 
 - name: parse-version | Include macOS Agent version tasks
   ansible.builtin.include_tasks: parse-version-macos.yml
-  when: ansible_facts.os_family == "Darwin"
+  when: ansible_facts['os_family'] == "Darwin"
 
 - name: parse-version | Set skip install flag if version already installed (Linux)
   ansible.builtin.set_fact:
-    agent_datadog_skip_install: "{{ agent_datadog_version_check_linux.stdout | trim == agent_datadog_agent_os2version[ansible_facts.os_family] }}"
-  when: ansible_facts.system is defined and ansible_facts.system == "Linux"
+    agent_datadog_skip_install: "{{ agent_datadog_version_check_linux.stdout | trim == agent_datadog_agent_os2version[ansible_facts['os_family']] }}"
+  when: ansible_facts['system'] is defined and ansible_facts['system'] == "Linux"
 
 - name: parse-version | Set skip install flag if version already installed (Windows)
   ansible.builtin.set_fact:
-    agent_datadog_skip_install: "{{ agent_datadog_version_check_win.stdout | trim == agent_datadog_agent_os2version[ansible_facts.os_family] }}"
-  when: ansible_facts.os_family == "Windows"
+    agent_datadog_skip_install: "{{ agent_datadog_version_check_win.stdout | trim == agent_datadog_agent_os2version[ansible_facts['os_family']] }}"
+  when: ansible_facts['os_family'] == "Windows"
 
 - name: parse-version | Set skip install flag if version already installed (macOS)
   ansible.builtin.set_fact:
-    agent_datadog_skip_install: "{{ agent_datadog_version_check_macos.stdout | trim == agent_datadog_agent_os2version[ansible_facts.os_family] }}"
-  when: ansible_facts.os_family == "Darwin"
+    agent_datadog_skip_install: "{{ agent_datadog_version_check_macos.stdout | trim == agent_datadog_agent_os2version[ansible_facts['os_family']] }}"
+  when: ansible_facts['os_family'] == "Darwin"

@@ -52,8 +52,8 @@
     mode: "0644"
     remote_src: true
   when:
-    ((ansible_facts.distribution == 'Debian' and ansible_facts.distribution_major_version|int < 9) or (ansible_facts.distribution == 'Ubuntu' and
-    ansible_facts.distribution_major_version | int < 16)) and not ansible_check_mode
+    ((ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version']|int < 9) or (ansible_facts['distribution'] == 'Ubuntu' and
+    ansible_facts['distribution_major_version'] | int < 16)) and not ansible_check_mode
 
 - name: pkg-debian | Ensure Datadog non-https repositories and repositories not using signed-by option are deprecated
   ansible.builtin.apt_repository:
