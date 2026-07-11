@@ -56,8 +56,15 @@ The machine needs to be prepared. In CI this is done using [`molecule/default/pr
 ---
 - name: Prepare
   hosts: all
-  gather_facts: false
   become: true
+  gather_facts: false
+
+  pre_tasks:
+    - name: Install sudo if missing
+      ansible.builtin.raw: "{{ ansible_pkg_mgr | default('dnf') }} install -y sudo}"
+      become: false
+      changed_when: false
+      failed_when: false
 
   roles:
     - role: buluma.bootstrap
@@ -243,7 +250,7 @@ datadog_windows_program_files_dir: ""
 datadog_windows_config_files_dir: ""
 
 # Default configuration root.  Do not modify
-datadog_windows_config_root: "{{ ansible_facts.env['ProgramData'] }}\\Datadog"
+datadog_windows_config_root: "{{ ansible_facts['env'].ProgramData }}\\Datadog"
 
 # do not modify.  Default empty value for constructing the list of optional
 # arguments to supply to the windows installer.
@@ -290,14 +297,14 @@ datadog_agent6_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] ht
 datadog_agent7_apt_repo: "deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ stable 7"
 
 # The default yum repository for each major Agent version is specified in the following variables.
-datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_facts.architecture }}"
-datadog_agent6_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_facts.architecture }}"
-datadog_agent7_yum_repo: "https://yum.datadoghq.com/stable/7/{{ ansible_facts.architecture }}"
+datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_facts['architecture'] }}"
+datadog_agent6_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_facts['architecture'] }}"
+datadog_agent7_yum_repo: "https://yum.datadoghq.com/stable/7/{{ ansible_facts['architecture'] }}"
 
 # The default zypper repository for each major Agent version is specified in the following variables.
-datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_facts.architecture }}"
-datadog_agent6_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_facts.architecture }}"
-datadog_agent7_zypper_repo: "https://yum.datadoghq.com/suse/stable/7/{{ ansible_facts.architecture }}"
+datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_facts['architecture'] }}"
+datadog_agent6_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_facts['architecture'] }}"
+datadog_agent7_zypper_repo: "https://yum.datadoghq.com/suse/stable/7/{{ ansible_facts['architecture'] }}"
 
 # Default macOS latest dmg package URL
 
@@ -346,11 +353,14 @@ Here is an overview of related roles:
 
 ## [Compatibility](#compatibility)
 
-This role has been tested on these [container images](https://hub.docker.com/u/robertdebock):
+This role has been tested on these [container images](https://hub.docker.com/u/buluma):
 
 |container|tags|
 |---------|----|
-|[EL](https://hub.docker.com/r/robertdebock/enterpriselinux)|all|
+|[EL](https://hub.docker.com/r/buluma/docker-molecule-images)|all|
+|[Debian](https://hub.docker.com/r/buluma/docker-molecule-images)|all|
+|[Fedora](https://hub.docker.com/r/buluma/docker-molecule-images)|all|
+|[Ubuntu](https://hub.docker.com/r/buluma/docker-molecule-images)|all|
 
 The minimum version of Ansible required is 2.12, tests have been done on:
 
@@ -368,6 +378,3 @@ If you find issues, please register them on [GitHub](https://github.com/buluma/a
 
 [buluma](https://buluma.github.io/)
 
-### Get Help
-- Report issues: https://github.com/buluma/ansible-role-datadog/issues/new
-- See docs: https://docs.ansible.com/collection/gallery/ansible-role-datadog
