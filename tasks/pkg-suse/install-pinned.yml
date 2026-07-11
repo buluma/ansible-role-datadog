@@ -1,5 +1,5 @@
 ---
-- name: pkg-suse | install-pinned | Install pinned datadog-agent package
+- name: install-pinned | Install pinned datadog-agent package
   community.general.zypper:
     name: datadog-agent={{ agent_datadog_agent_suse_version }}
     state: present
