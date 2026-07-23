@@ -52,6 +52,10 @@
         key: /tmp/DATADOG_RPM_KEY_E09422B3.public
         state: present
       when: not ansible_check_mode
+      # This key is only needed to verify signatures on old packages
+      # already signed with it; it has genuinely expired and modern
+      # crypto policy (e.g. EL10) rejects importing it outright.
+      failed_when: false
 
     - name: pkg-redhat | Download new RPM key (Expires in 2024)
       ansible.builtin.get_url:
@@ -65,6 +69,9 @@
         key: /tmp/DATADOG_RPM_KEY_20200908.public
         state: present
       when: not ansible_check_mode
+      # Same as the 2022 key above: only needed for old package
+      # signatures, and it too has now expired.
+      failed_when: false
 
     - name: pkg-redhat | Download new RPM key (Expires in 2028)
       ansible.builtin.get_url:
