@@ -19,12 +19,12 @@
 
 - name: _apt-key-import | Set local helper variable for determining key import (when not {{ datadog_apt_key_current_name }})
   ansible.builtin.set_fact:
-    agent_key_needs_import: "{{ 'false' if agent_key_exists_result.rc == 0 else 'true' }}"
+    agent_key_needs_import: "{{ agent_key_exists_result.rc != 0 }}"
   when: agent_key_fingerprint != datadog_apt_key_current_name
 
 - name: _apt-key-import | Set local helper variable for determining key import (when {{ datadog_apt_key_current_name }})
   ansible.builtin.set_fact:
-    agent_key_needs_import: "true"
+    agent_key_needs_import: true
   when: agent_key_fingerprint == datadog_apt_key_current_name
 
 - name: _apt-key-import | Create temporary directory for key manipulation
