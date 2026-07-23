@@ -40,22 +40,27 @@
         state: present
       when: not ansible_check_mode
 
+    # The 2022 and 2024 legacy signing keys are only needed to verify
+    # signatures on old, already-published packages, not the current
+    # release this role installs. Both have now genuinely expired:
+    # EL10's stricter crypto policy rejects importing them outright
+    # ("No binding signature at time"), while on other platforms the
+    # import succeeds but rpm_key never recognizes the expired key as
+    # already present, re-importing (and reporting changed) every run.
+    # Skip them entirely rather than tolerate either failure mode.
     - name: pkg-redhat | Download new RPM key (Expires in 2022)
       ansible.builtin.get_url:
         url: "{{ datadog_yum_gpgkey_e09422b3 }}"
         dest: /tmp/DATADOG_RPM_KEY_E09422B3.public
         mode: 600
         checksum: "sha256:{{ datadog_yum_gpgkey_e09422b3_sha256sum }}"
+      when: false
 
     - name: pkg-redhat | Import new RPM key (Expires in 2022)
       ansible.builtin.rpm_key:
         key: /tmp/DATADOG_RPM_KEY_E09422B3.public
         state: present
-      when: not ansible_check_mode
-      # This key is only needed to verify signatures on old packages
-      # already signed with it; it has genuinely expired and modern
-      # crypto policy (e.g. EL10) rejects importing it outright.
-      failed_when: false
+      when: false
 
     - name: pkg-redhat | Download new RPM key (Expires in 2024)
       ansible.builtin.get_url:
@@ -63,15 +68,13 @@
         dest: /tmp/DATADOG_RPM_KEY_20200908.public
         mode: 600
         checksum: "sha256:{{ datadog_yum_gpgkey_20200908_sha256sum }}"
+      when: false
 
     - name: pkg-redhat | Import new RPM key (Expires in 2024)
       ansible.builtin.rpm_key:
         key: /tmp/DATADOG_RPM_KEY_20200908.public
         state: present
-      when: not ansible_check_mode
-      # Same as the 2022 key above: only needed for old package
-      # signatures, and it too has now expired.
-      failed_when: false
+      when: false
 
     - name: pkg-redhat | Download new RPM key (Expires in 2028)
       ansible.builtin.get_url:
