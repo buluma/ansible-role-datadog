@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump ansible/ansible-lint from 26.6.0 to 26.8.0 [\#28](https://github.com/buluma/ansible-role-datadog/pull/28) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump release-drafter/release-drafter from 7 to 7.6.0 [\#27](https://github.com/buluma/ansible-role-datadog/pull/27) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [26.6.2](https://github.com/buluma/ansible-role-datadog/tree/26.6.2) (2026-07-23)
