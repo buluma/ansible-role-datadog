@@ -90,7 +90,8 @@
 
 # datadog_agent{5,6,7}_apt_repo are one-line "deb [options] URI SUITE [COMPONENT...]" strings,
 # split here into the parts deb822_repository needs.
-- name: pkg-debian | Ensure Datadog repository is up-to-date
+# The noqa is there because ansible-lint can't validate the templated types.
+- name: pkg-debian | Ensure Datadog repository is up-to-date  # noqa: args[module]
   ansible.builtin.deb822_repository:
     name: ansible_datadog_{{ item.key }}
     types: "{{ _datadog_apt_repo_types }}"
@@ -118,7 +119,8 @@
 
 # datadog_apt_repo is a one-line "deb [options] URI SUITE [COMPONENT...]" string, split here
 # into the parts deb822_repository needs.
-- name: pkg-debian | (Custom) Ensure Datadog repository is up-to-date
+# The noqa is there because ansible-lint can't validate the templated types.
+- name: pkg-debian | (Custom) Ensure Datadog repository is up-to-date  # noqa: args[module]
   ansible.builtin.deb822_repository:
     name: ansible_datadog_custom
     types: "{{ _datadog_apt_repo_types }}"
