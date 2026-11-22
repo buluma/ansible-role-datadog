@@ -36,3 +36,17 @@
   roles:
     - role: buluma.bootstrap
     - role: buluma.ca_certificates
+
+  post_tasks:
+    - name: Gather facts for repository fixtures
+      ansible.builtin.setup:
+
+    - name: Seed legacy Datadog repository files on Debian
+      ansible.builtin.copy:
+        dest: "/etc/apt/sources.list.d/{{ item }}.list"
+        content: "# Legacy Datadog source\n"
+        mode: "0644"
+      loop:
+        - apt_datadoghq_com
+        - ansible_datadog_7
+      when: ansible_facts['os_family'] == 'Debian'
