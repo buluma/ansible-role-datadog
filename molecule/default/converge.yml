@@ -6,6 +6,7 @@
     datadog_enabled: true
     datadog_agent_major_version: 7
     datadog_config:
+      hostname: molecule-datadog-test
       tags:
         - mytag0
         - mytag1
