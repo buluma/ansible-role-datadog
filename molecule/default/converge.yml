@@ -2,11 +2,13 @@
 - name: Converge
   hosts: all
   vars:
-    datadog_api_key: "11111111111111111111111111111111"
+    datadog_api_key: "a1111111111111111111111111111111"
     datadog_enabled: true
     datadog_agent_major_version: 7
     datadog_config:
-      tags: "mytag0, mytag1"
+      tags:
+        - mytag0
+        - mytag1
       log_level: INFO
       apm_enabled: "true" # has to be set as a string
     datadog_config_ex:
@@ -30,6 +32,17 @@
               - sshd
 
   tasks:
-    - name: "Include buluma.datadog"
-      ansible.builtin.include_role:
-        name: "buluma.datadog"
+    - name: Run role and capture service diagnostics
+      block:
+        - name: Include buluma.datadog
+          ansible.builtin.include_role:
+            name: buluma.datadog
+      always:
+        - name: Read agent service journal
+          ansible.builtin.command: journalctl -u datadog-agent.service --no-pager -n 100
+          register: datadog_service_journal
+          changed_when: false
+
+        - name: Show agent service journal
+          ansible.builtin.debug:
+            var: datadog_service_journal.stdout_lines
