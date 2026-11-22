@@ -159,7 +159,7 @@
   ansible.builtin.set_fact:
     install_signature:
       install_id: "{{ uuid_cmd.stdout }}"
-      install_time: "{{ ansible_date_time.epoch }}"
+      install_time: "{{ ansible_facts['date_time']['epoch'] }}"
   when: not install_file.stat.exists
 
 - name: _agent-linux-macos-shared | Create installation json file
